@@ -22,7 +22,7 @@ type Requser struct {
 	PostParams url.Values
 	Json       *Js
 	Encryption bool
-	TripleDes  TripleDes
+	Des        Des
 }
 
 type Jsonparam struct {
@@ -110,7 +110,7 @@ func (this *Requser)InitDES() error {
 			if err != nil {
 				return err
 			}
-			origData, err := this.TripleDes.TripleDesDecrypt(base64params, viper.GetString("system.DESkey"), viper.GetString("system.DESiv"))
+			origData, err := this.Des.TripleDesDecrypt(base64params, viper.GetString("system.DESkey"), viper.GetString("system.DESiv"))
 			if err != nil {
 				return err
 			}
@@ -267,6 +267,10 @@ func (this *Requser)GetJson() Js {
 func (this *Requser)ErrorLogRecover() {
 	if err := recover(); err != nil {
 		this.Context.Response().Write([]byte("系统错误具体原因:" + TurnString(err)))
-		LogS.Error(err, map[string]interface{}{})
+
+		LogError(err, map[string]interface{}{
+			"URL.Path":this.Context.Request().URL().Path(),
+			"QueryParams":this.Context.QueryParams(),
+		})
 	}
 }

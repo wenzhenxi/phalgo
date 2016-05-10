@@ -42,12 +42,12 @@ func updateLog() {
 	}
 }
 
-func Debug(str string, data logrus.Fields) {
+func LogDebug(str string, data logrus.Fields) {
 	updateLog()
 	LogS.WithFields(data).Debug(str)
 }
 
-func Error(str interface{}, data logrus.Fields) {
+func LogError(str interface{}, data logrus.Fields) {
 	updateLog()
 	LogS.WithFields(data).Error(str)
 }

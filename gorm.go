@@ -6,25 +6,50 @@ import (
 	"github.com/spf13/viper"
 )
 
-var GDB *gorm.DB
 
-func init() {
 
-	mysqlhost := viper.GetString("database.mysqlhost")
-	mysqldb := viper.GetString("database.mysqldb")
-	mysqluser := viper.GetString("database.mysqluser")
-	mysqlpass := viper.GetString("database.mysqlpass")
-	ports := viper.GetString("database.ports")
+var Gorm  map[string]*gorm.DB
+
+func NewDB(dbname string) {
+	Gorm = make(map[string]*gorm.DB)
+	//默认配置
+	viper.SetDefault(dbname, map[string]interface{}{
+		"mysqlhost"    : "127.0.0.1",
+		"mysqldb"      : "phalgo",
+		"mysqluser"    : "root",
+		"mysqlpass"    : "",
+		"ports"        :3306,
+		"idleconns_max": 0,
+		"openconns_max": 20,
+	})
+
+	var orm *gorm.DB
+
+	mysqlhost := viper.GetString(dbname + ".mysqlhost")
+	mysqldb   := viper.GetString(dbname + ".mysqldb")
+	mysqluser := viper.GetString(dbname + ".mysqluser")
+	mysqlpass := viper.GetString(dbname + ".mysqlpass")
+	ports     := viper.GetString(dbname + ".ports")
 
 	var err error
-	GDB, err = gorm.Open("mysql", mysqluser + ":" + mysqlpass + "@tcp(" + mysqlhost + ":" + ports + ")/" + mysqldb + "?charset=utf8")
+	orm, err = gorm.Open("mysql", mysqluser + ":" + mysqlpass + "@tcp(" + mysqlhost + ":" + ports + ")/" + mysqldb + "?charset=utf8")
 	//开启sql调试模式
 	//GDB.LogMode(true)
 	if err != nil {
 		fmt.Println("数据库连接异常!")
 	}
 	//连接池的空闲数大小
-	GDB.DB().SetMaxIdleConns(viper.GetInt("database.idleconns_max"))
+	orm.DB().SetMaxIdleConns(viper.GetInt(dbname + ".idleconns_max"))
 	//最大打开连接数
-	GDB.DB().SetMaxIdleConns(viper.GetInt("database.openconns_max"))
+	orm.DB().SetMaxIdleConns(viper.GetInt(dbname + ".openconns_max"))
+	Gorm[dbname] = orm
+}
+
+func GetNameORM(dbname string) *gorm.DB {
+
+	return Gorm[dbname]
+}
+
+func GetORM() *gorm.DB {
+	return Gorm["dbDefault"]
 }

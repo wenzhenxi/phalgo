@@ -6,12 +6,12 @@ import (
 	"crypto/des"
 )
 
-type TripleDes struct {
+type Des struct {
 
 }
 
 
-func (this *TripleDes)DesEncrypt(origData, key []byte) ([]byte, error) {
+func (this *Des)DesEncrypt(origData, key []byte) ([]byte, error) {
 	block, err := des.NewCipher(key)
 	if err != nil {
 		return nil, err
@@ -26,7 +26,7 @@ func (this *TripleDes)DesEncrypt(origData, key []byte) ([]byte, error) {
 	return crypted, nil
 }
 
-func (this *TripleDes)DesDecrypt(crypted, key []byte) ([]byte, error) {
+func (this *Des)DesDecrypt(crypted, key []byte) ([]byte, error) {
 	block, err := des.NewCipher(key)
 	if err != nil {
 		return nil, err
@@ -40,20 +40,20 @@ func (this *TripleDes)DesDecrypt(crypted, key []byte) ([]byte, error) {
 	return origData, nil
 }
 
-func (this *TripleDes)ZeroPadding(ciphertext []byte, blockSize int) []byte {
+func (this *Des)ZeroPadding(ciphertext []byte, blockSize int) []byte {
 	padding := blockSize - len(ciphertext) % blockSize
 	padtext := bytes.Repeat([]byte{0}, padding)
 	return append(ciphertext, padtext...)
 }
 
-func (this *TripleDes)ZeroUnPadding(origData []byte) []byte {
+func (this *Des)ZeroUnPadding(origData []byte) []byte {
 	return bytes.TrimRightFunc(origData, func(r rune) bool {
 		return r == rune(0)
 	})
 }
 
 // 3DES加密
-func (this *TripleDes)TripleDesEncrypt(origData []byte, key string, iv string) ([]byte, error) {
+func (this *Des)TripleDesEncrypt(origData []byte, key string, iv string) ([]byte, error) {
 	block, err := des.NewTripleDESCipher([]byte(key))
 	if err != nil {
 		return nil, err
@@ -68,7 +68,7 @@ func (this *TripleDes)TripleDesEncrypt(origData []byte, key string, iv string) (
 }
 
 // 3DES解密
-func (this *TripleDes)TripleDesDecrypt(crypted []byte, key string, iv string) ([]byte, error) {
+func (this *Des)TripleDesDecrypt(crypted []byte, key string, iv string) ([]byte, error) {
 	block, err := des.NewTripleDESCipher([]byte(key))
 	if err != nil {
 		return nil, err
@@ -83,13 +83,13 @@ func (this *TripleDes)TripleDesDecrypt(crypted []byte, key string, iv string) ([
 	return origData, nil
 }
 
-func (this *TripleDes)PKCS5Padding(ciphertext []byte, blockSize int) []byte {
+func (this *Des)PKCS5Padding(ciphertext []byte, blockSize int) []byte {
 	padding := blockSize - len(ciphertext) % blockSize
 	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
 	return append(ciphertext, padtext...)
 }
 
-func (this *TripleDes)PKCS5UnPadding(origData []byte) []byte {
+func (this *Des)PKCS5UnPadding(origData []byte) []byte {
 	length := len(origData)
 	// 去掉最后一个字节 unpadding 次
 	unpadding := int(origData[length - 1])

@@ -11,7 +11,7 @@ import (
 
 var Echo *echo.Echo
 
-func New() *echo.Echo {
+func NewEcho() *echo.Echo {
 	Echo = echo.New()
 	return Echo
 }

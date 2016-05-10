@@ -6,8 +6,8 @@ import (
 	"net/http"
 )
 
-func OpenPprof() {
+func OpenPprof(port string) {
 	go func() {
-		log.Println(http.ListenAndServe("localhost:6061", nil))
+		log.Println(http.ListenAndServe("localhost:" + port, nil))
 	}()
 }
