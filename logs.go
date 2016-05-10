@@ -1,4 +1,4 @@
-package logs
+package phalgo
 
 import (
 	"github.com/Sirupsen/logrus"

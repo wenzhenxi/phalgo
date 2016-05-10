@@ -1,4 +1,4 @@
-package tool
+package phalgo
 
 import "github.com/astaxie/beego/httplib"
 

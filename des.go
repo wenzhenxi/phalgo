@@ -1,4 +1,4 @@
-package des
+package phalgo
 
 import (
 	"bytes"

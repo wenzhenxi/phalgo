@@ -1,4 +1,4 @@
-package gjson
+package phalgo
 
 import (
 	"encoding/json"

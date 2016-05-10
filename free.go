@@ -1,4 +1,4 @@
-package cache
+package phalgo
 import (
 
 	"github.com/coocood/freecache"

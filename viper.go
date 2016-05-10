@@ -1,4 +1,4 @@
-package config
+package phalgo
 import (
 	"github.com/spf13/viper"
 	"fmt"

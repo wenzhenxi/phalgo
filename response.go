@@ -1,4 +1,4 @@
-package response
+package phalgo
 import (
 
 	"github.com/labstack/echo"

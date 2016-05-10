@@ -1,4 +1,4 @@
-package pprof
+package phalgo
 
 import (
 	_ "net/http/pprof"

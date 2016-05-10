@@ -1,4 +1,4 @@
-package request
+package phalgo
 import (
 	"strconv"
 	"github.com/labstack/echo"
