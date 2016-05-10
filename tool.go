@@ -21,11 +21,6 @@ func GetTime(s string) {
 	fmt.Println(t)
 }
 
-
-func Echo(i interface{}) {
-	fmt.Println(i)
-}
-
 func Turnbyte(i interface{}) []byte {
 	j, p := i.([]byte)
 	if p {
