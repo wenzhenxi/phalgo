@@ -10,12 +10,8 @@ import (
 	"github.com/spf13/viper"
 	"crypto/md5"
 	"encoding/hex"
-	"tob-service/general/des"
 	"encoding/base64"
 	"strings"
-	"fmt"
-	"tob-service/general/logs"
-	"tob-service/general"
 )
 
 
@@ -27,7 +23,7 @@ type Requser struct {
 	PostParams url.Values
 	Json       *gjson.Js
 	Encryption bool
-	TripleDes  des.TripleDes
+	TripleDes  TripleDes
 }
 
 type Jsonparam struct {
@@ -121,7 +117,6 @@ func (this *Requser)InitDES() error {
 			}
 			params = string(origData)
 		}
-		fmt.Println(params)
 		this.Json = gjson.Json(params)
 		this.Encryption = true
 	}else {
@@ -228,7 +223,6 @@ func (this *Requser)GetInt() int {
 //获取并且验证参数 string类型
 func (this *Requser)GetJsonString() string {
 	val := this.Jsonparam.val.Tostring()
-	fmt.Println(val)
 	//验证参数是否必须传递
 	if this.Jsonparam.Require == true {
 		if val == "" {
@@ -273,7 +267,7 @@ func (this *Requser)GetJson() gjson.Js {
 //----------------------------------------捕获panic异样防止程序终止
 func (this *Requser)ErrorLogRecover() {
 	if err := recover(); err != nil {
-		this.Context.Response().Write([]byte("系统错误具体原因:" + tool.TurnString(err)))
-		logs.LogS.Error(err, map[string]interface{}{})
+		this.Context.Response().Write([]byte("系统错误具体原因:" + TurnString(err)))
+		LogS.Error(err, map[string]interface{}{})
 	}
 }
