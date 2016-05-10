@@ -6,9 +6,10 @@ import (
 )
 
 var Redis cache.Cache
-var err error
+
 
 func init() {
+	var err error
 	Redis, err = cache.NewCache("redis", `{"key":"collectionName","conn":"10.144.176.153:6379","dbNum":"0","password":"woyouwaimai76"}`)
 	if err != nil {
 		fmt.Println(err)

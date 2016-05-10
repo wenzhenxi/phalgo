@@ -11,10 +11,9 @@ var LogS *logrus.Logger
 
 var day string
 var logfile *os.File
-var err error
-
 
 func init() {
+	var err error
 	LogS = logrus.New()
 	LogS.Formatter = new(logrus.JSONFormatter)
 	//log.Formatter = new(logrus.TextFormatter) // default
@@ -31,6 +30,7 @@ func init() {
 }
 
 func updateLog() {
+	var err error
 	day2 := time.Now().Format("02")
 	if day2 != day {
 		logfile.Close()
