@@ -6,7 +6,6 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/url"
-	"gin-partners/general/gjson"
 	"github.com/spf13/viper"
 	"crypto/md5"
 	"encoding/hex"
@@ -21,14 +20,14 @@ type Requser struct {
 	Jsonparam  *Jsonparam
 	valid      validation.Validation
 	PostParams url.Values
-	Json       *gjson.Js
+	Json       *Js
 	Encryption bool
 	TripleDes  TripleDes
 }
 
 type Jsonparam struct {
 	key     string
-	val     gjson.Js
+	val     Js
 	min     int
 	max     int
 	Require bool
@@ -75,7 +74,7 @@ func (this *Requser)InitPostParam() {
 func (this *Requser)InitDES() error {
 
 	params := ""
-	this.Json = new(gjson.Js)
+	this.Json = new(Js)
 	params = this.GetPostParam("params").GetString()
 	//如果是开启了 DES加密 需要验证是否加密,然后需要验证签名,和加密内容
 	if viper.GetBool("system.OpenDES") == true {
@@ -117,7 +116,7 @@ func (this *Requser)InitDES() error {
 			}
 			params = string(origData)
 		}
-		this.Json = gjson.Json(params)
+		this.Json = Json(params)
 		this.Encryption = true
 	}else {
 		this.Encryption = false
@@ -252,7 +251,7 @@ func (this *Requser)GetJsonInt() int {
 }
 
 //获取并且验证参数 string类型
-func (this *Requser)GetJson() gjson.Js {
+func (this *Requser)GetJson() Js {
 	val := this.Jsonparam.val.Tostring()
 	//验证参数是否必须传递
 	if this.Jsonparam.Require == true {
