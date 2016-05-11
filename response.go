@@ -1,6 +1,12 @@
 package phalgo
-import (
 
+//	PhalGo-Response
+//	返回json参数,默认结构code,data,msg
+//	喵了个咪 <wenzhenxi@vip.qq.com> 2016/5/11
+//  依赖情况:
+//          "github.com/labstack/echo" 必须基于echo路由
+
+import (
 	"github.com/labstack/echo"
 	"net/http"
 )
@@ -16,12 +22,21 @@ type RetParameter struct {
 	Msg  string     `json:"msg"`
 }
 
+//返回自定自定义的消息
+func (this *Response)RetCustomize(d interface{}, code int, msg string) error {
+	this.parameter = new(RetParameter)
+	this.parameter.Code = code
+	this.parameter.Data = d
+	this.parameter.Msg = msg
+	return this.Context.JSON(http.StatusOK, this.parameter)
+}
+
 //返回成功的结果
 func (this *Response)RetSuccess(d interface{}) error {
 	this.parameter = new(RetParameter)
 	this.parameter.Code = 1
 	this.parameter.Data = d
-	return this.Context.JSON(http.StatusOK,this.parameter)
+	return this.Context.JSON(http.StatusOK, this.parameter)
 }
 
 //返回失败结果
@@ -30,5 +45,5 @@ func (this *Response)RetError(e error, c int) error {
 	this.parameter.Code = c
 	this.parameter.Data = nil
 	this.parameter.Msg = e.Error()
-	return this.Context.JSON(http.StatusOK,this.parameter)
+	return this.Context.JSON(http.StatusOK, this.parameter)
 }

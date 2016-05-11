@@ -1,12 +1,17 @@
 package phalgo
 
+//	PhalGo-Tool 工具
+//	提供便捷的方法进行类型断言转换,打印当前时间,获取类型
+//	喵了个咪 <wenzhenxi@vip.qq.com> 2016/5/11
+//  依赖情况:无依赖
+
 import (
 	"time"
 	"fmt"
 	"reflect"
 )
 
-func Int64turnint(i interface{}) int {
+func Int64TurnInt(i interface{}) int {
 	j, p := i.(int64)
 	if p {
 		return int(j)
@@ -14,14 +19,20 @@ func Int64turnint(i interface{}) int {
 	return 0
 }
 
-
-func GetTime(s string) {
+func PrintTime(s string) {
 	t := time.Now()
 	fmt.Printf(s)
 	fmt.Println(t)
 }
 
-func Turnbyte(i interface{}) []byte {
+func PrintType(j interface{}) {
+	fmt.Println(reflect.TypeOf(j))
+}
+
+
+//------------------------------------------------以下都是从接口类型进行类型断言转换---------------------
+
+func TurnByte(i interface{}) []byte {
 	j, p := i.([]byte)
 	if p {
 		return j
@@ -44,6 +55,7 @@ func TurnString(i interface{}) string {
 	}
 	return ""
 }
+
 func TurnInt(i interface{}) int {
 	j, p := i.(int)
 	if p {
@@ -60,6 +72,3 @@ func TurnFloat64(i interface{}) float64 {
 	return 0
 }
 
-func GetType(j interface{}) {
-	fmt.Println(reflect.TypeOf(j))
-}

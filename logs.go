@@ -1,5 +1,11 @@
 package phalgo
 
+//	PhalGo-Logs
+//	日志记录功能
+//	喵了个咪 <wenzhenxi@vip.qq.com> 2016/5/11
+//  依赖情况:
+//          "github.com/Sirupsen/logrus"  基于logrus的log类
+
 import (
 	"github.com/Sirupsen/logrus"
 	"os"

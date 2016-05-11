@@ -1,5 +1,10 @@
 package phalgo
 
+//	PhalGo-engine
+//	注意路由引擎,依赖Echo路由
+//	喵了个咪 <wenzhenxi@vip.qq.com> 2016/5/11
+//  依赖情况:
+//			"github.com/labstack/echo"
 
 import (
 	"github.com/labstack/echo/middleware"
@@ -7,7 +12,6 @@ import (
 	"github.com/labstack/echo/engine/fasthttp"
 	"github.com/labstack/echo/engine/standard"
 )
-
 
 var Echo *echo.Echo
 

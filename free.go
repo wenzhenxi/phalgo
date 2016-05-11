@@ -1,6 +1,12 @@
 package phalgo
-import (
 
+//	PhalGo-Free
+//	进程级别缓存数据Free,使用gob转意存储
+//	喵了个咪 <wenzhenxi@vip.qq.com> 2016/5/11
+//  依赖情况:
+//			"github.com/coocood/freecache"
+
+import (
 	"github.com/coocood/freecache"
 	"encoding/gob"
 	"bytes"

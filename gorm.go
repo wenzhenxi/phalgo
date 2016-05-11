@@ -1,4 +1,11 @@
 package phalgo
+
+//	PhalGo-Grom
+//	数据库处理,使用Grom
+//	喵了个咪 <wenzhenxi@vip.qq.com> 2016/5/11
+//  依赖情况:
+//			"github.com/jinzhu/gorm"
+
 import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -26,10 +33,10 @@ func NewDB(dbname string) {
 	var orm *gorm.DB
 
 	mysqlhost := viper.GetString(dbname + ".mysqlhost")
-	mysqldb   := viper.GetString(dbname + ".mysqldb")
+	mysqldb := viper.GetString(dbname + ".mysqldb")
 	mysqluser := viper.GetString(dbname + ".mysqluser")
 	mysqlpass := viper.GetString(dbname + ".mysqlpass")
-	ports     := viper.GetString(dbname + ".ports")
+	ports := viper.GetString(dbname + ".ports")
 
 	var err error
 	orm, err = gorm.Open("mysql", mysqluser + ":" + mysqlpass + "@tcp(" + mysqlhost + ":" + ports + ")/" + mysqldb + "?charset=utf8")

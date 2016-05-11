@@ -1,4 +1,12 @@
 package phalgo
+
+//	PhalGo-Request
+//	请求解析,获取get,post,json参数,签名加密,链式操作,并且参数验证
+//	喵了个咪 <wenzhenxi@vip.qq.com> 2016/5/11
+//  依赖情况:
+//          "github.com/astaxie/beego/validation" 基于beego的拦截器
+//          "github.com/labstack/echo" 依赖与echo
+
 import (
 	"strconv"
 	"github.com/labstack/echo"
@@ -124,6 +132,10 @@ func (this *Requser)InitDES() error {
 
 
 	return nil;
+}
+
+func (this *Requser)SetJson(json string) {
+	this.Json = Json(json)
 }
 
 
