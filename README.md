@@ -47,7 +47,7 @@ phalgo的升级也很简单:
     
 请求**localhost:1333**:
 
-    
+![](http://i.imgur.com/tHi9dT2.png)
     
 ##依赖说明
 
