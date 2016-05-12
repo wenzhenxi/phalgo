@@ -76,7 +76,6 @@ func (this *Requser)InitPostParam() {
 		this.valid.SetError(string(p), "Body Error ParseQuery")
 	}
 
-
 }
 
 func (this *Requser)InitDES() error {
@@ -91,6 +90,9 @@ func (this *Requser)InitDES() error {
 		}
 	}
 	if params != "" {
+
+
+
 		sign := this.GetPostParam("sign").GetString()
 		timeStamp := this.GetPostParam("timeStamp").GetString()
 		randomNum := this.GetPostParam("randomNum").GetString()

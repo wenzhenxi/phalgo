@@ -9,6 +9,7 @@ import (
 	"time"
 	"fmt"
 	"reflect"
+	"net/url"
 )
 
 func Int64TurnInt(i interface{}) int {
@@ -72,3 +73,25 @@ func TurnFloat64(i interface{}) float64 {
 	return 0
 }
 
+//---------------------urlcode
+
+
+func UrlEncode(urls string) (string, error) {
+
+	//UrlEnCode编码
+	urlStr, err := url.Parse(urls)
+	if err != nil {
+		return "", err
+	}
+	return urlStr.RequestURI(), nil
+}
+
+func UrlDecode(urls string) (string, error) {
+
+	//UrlEnCode解码
+	urlStr, err := url.Parse(urls)
+	if err != nil {
+		return "", err
+	}
+	return urlStr.Path, nil
+}
