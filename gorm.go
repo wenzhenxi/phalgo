@@ -10,7 +10,6 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"fmt"
-	"github.com/spf13/viper"
 )
 
 
@@ -20,7 +19,7 @@ var Gorm  map[string]*gorm.DB
 func NewDB(dbname string) {
 	Gorm = make(map[string]*gorm.DB)
 	//默认配置
-	viper.SetDefault(dbname, map[string]interface{}{
+	Config.SetDefault(dbname, map[string]interface{}{
 		"mysqlhost"    : "127.0.0.1",
 		"mysqldb"      : "phalgo",
 		"mysqluser"    : "root",
@@ -32,11 +31,11 @@ func NewDB(dbname string) {
 
 	var orm *gorm.DB
 
-	mysqlhost := viper.GetString(dbname + ".mysqlhost")
-	mysqldb := viper.GetString(dbname + ".mysqldb")
-	mysqluser := viper.GetString(dbname + ".mysqluser")
-	mysqlpass := viper.GetString(dbname + ".mysqlpass")
-	ports := viper.GetString(dbname + ".ports")
+	mysqlhost := Config.GetString(dbname + ".mysqlhost")
+	mysqldb := Config.GetString(dbname + ".mysqldb")
+	mysqluser := Config.GetString(dbname + ".mysqluser")
+	mysqlpass := Config.GetString(dbname + ".mysqlpass")
+	ports := Config.GetString(dbname + ".ports")
 
 	var err error
 	orm, err = gorm.Open("mysql", mysqluser + ":" + mysqlpass + "@tcp(" + mysqlhost + ":" + ports + ")/" + mysqldb + "?charset=utf8")
@@ -46,13 +45,15 @@ func NewDB(dbname string) {
 		fmt.Println("数据库连接异常!")
 	}
 	//连接池的空闲数大小
-	orm.DB().SetMaxIdleConns(viper.GetInt(dbname + ".idleconns_max"))
+	orm.DB().SetMaxIdleConns(Config.GetInt(dbname + ".idleconns_max"))
 	//最大打开连接数
-	orm.DB().SetMaxIdleConns(viper.GetInt(dbname + ".openconns_max"))
+	orm.DB().SetMaxIdleConns(Config.GetInt(dbname + ".openconns_max"))
 	Gorm[dbname] = orm
+
+	defer Gorm[dbname].Close()
 }
 
-func GetNameORM(dbname string) *gorm.DB {
+func GetORMByName(dbname string) *gorm.DB {
 
 	return Gorm[dbname]
 }

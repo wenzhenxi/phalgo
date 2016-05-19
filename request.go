@@ -14,7 +14,6 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/url"
-	"github.com/spf13/viper"
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/base64"
@@ -84,14 +83,13 @@ func (this *Requser)InitDES() error {
 	this.Json = new(Js)
 	params = this.GetPostParam("params").GetString()
 	//如果是开启了 DES加密 需要验证是否加密,然后需要验证签名,和加密内容
-	if viper.GetBool("system.OpenDES") == true {
+	if Config.GetBool("system.OpenDES") == true {
 		if params == "" {
 			return errors.New("No params")
 		}
 	}
+
 	if params != "" {
-
-
 
 		sign := this.GetPostParam("sign").GetString()
 		timeStamp := this.GetPostParam("timeStamp").GetString()
@@ -102,7 +100,7 @@ func (this *Requser)InitDES() error {
 		}
 
 		keymd5 := md5.New()
-		keymd5.Write([]byte(viper.GetString("system.MD5key")))
+		keymd5.Write([]byte(Config.GetString("system.MD5key")))
 		md5key := hex.EncodeToString(keymd5.Sum(nil))
 
 		signmd5 := md5.New()
@@ -120,7 +118,7 @@ func (this *Requser)InitDES() error {
 			if err != nil {
 				return err
 			}
-			origData, err := this.Des.TripleDesDecrypt(base64params, viper.GetString("system.DESkey"), viper.GetString("system.DESiv"))
+			origData, err := this.Des.TripleDesDecrypt(base64params, Config.GetString("system.DESkey"), Config.GetString("system.DESiv"))
 			if err != nil {
 				return err
 			}
@@ -131,7 +129,6 @@ func (this *Requser)InitDES() error {
 	}else {
 		this.Encryption = false
 	}
-
 
 	return nil;
 }

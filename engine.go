@@ -33,7 +33,8 @@ func GetEcho() *echo.Echo {
 	return Echo
 }
 
-func EchoDebug(b bool) {
+//开启这个会对每次请求进行打印
+func Middleware(b bool) {
 	if b == true {
 		Echo.Use(middleware.Logger())
 		Echo.Use(middleware.Recover())

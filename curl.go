@@ -22,3 +22,6 @@ func (this *Curl)CurlGet(url string) (string, error) {
 	}
 	return str, nil
 }
+
+
+

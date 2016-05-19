@@ -7,18 +7,23 @@ package phalgo
 //          "github.com/astaxie/beego/cache" 基于beego的redis操作
 
 import (
-	"github.com/astaxie/beego/cache"
-	_ "github.com/astaxie/beego/cache/redis"
-	"fmt"
+	"github.com/garyburd/redigo/redis"
 )
 
-var Redis cache.Cache
+var Redis redis.Conn
 
-func NewRedis() {
+func NewRedis(redisdb string) {
 	var err error
 
-	Redis, err = cache.NewCache("redis", `{"key":"collectionName","conn":"127.0.0.1:6379","dbNum":"0","password":"woyouwaimai76"}`)
+	Config.SetDefault(redisdb, map[string]interface{}{
+		"network"    : "tcp",
+		"address"    : "127.0.0.1:6379",
+		"password"   : "",
+	})
+
+	Redis, err = redis.Dial(Config.GetString(redisdb + ".network"), Config.GetString(redisdb + ".address"), redis.DialPassword(Config.GetString(redisdb + ".password")), redis.DialDatabase(0))
 	if err != nil {
-		fmt.Println(err)
+		print(err)
 	}
+	defer Redis.Close()
 }

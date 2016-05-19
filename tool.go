@@ -20,6 +20,7 @@ func Int64TurnInt(i interface{}) int {
 	return 0
 }
 
+
 func PrintTime(s string) {
 	t := time.Now()
 	fmt.Printf(s)
@@ -41,7 +42,7 @@ func TurnByte(i interface{}) []byte {
 	return nil
 }
 
-func TurnMapInterface(i interface{}) map[string]interface{} {
+func TurnMapStringInterface(i interface{}) map[string]interface{} {
 	j, p := i.(map[string]interface{})
 	if p {
 		return j
@@ -59,6 +60,14 @@ func TurnString(i interface{}) string {
 
 func TurnInt(i interface{}) int {
 	j, p := i.(int)
+	if p {
+		return j
+	}
+	return 0
+}
+
+func TurnInt64(i interface{}) int64 {
+	j, p := i.(int64)
 	if p {
 		return j
 	}

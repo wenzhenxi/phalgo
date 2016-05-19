@@ -11,14 +11,18 @@ import (
 	"fmt"
 )
 
+
+var Config *viper.Viper
+
 //初始化配置文件
 func NewConfig(filePath string, fileName string) {
-	viper.SetConfigName(fileName)
-	viper.AddConfigPath(filePath + "/")
+	Config = viper.New()
+	Config.SetConfigName(fileName)
+	Config.AddConfigPath(filePath + "/")
 
-	err := viper.ReadInConfig() // Find and read the config file
+	err := Config.ReadInConfig() // Find and read the config file
 
 	if err != nil { // Handle errors reading the config file
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		panic(fmt.Errorf("Fatal error config file: %s \n", err).Error())
 	}
 }
