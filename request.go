@@ -12,8 +12,6 @@ import (
 	"github.com/labstack/echo"
 	"github.com/astaxie/beego/validation"
 	"errors"
-	"io/ioutil"
-	"net/url"
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/base64"
@@ -26,7 +24,6 @@ type Requser struct {
 	params     *param
 	Jsonparam  *Jsonparam
 	valid      validation.Validation
-	PostParams url.Values
 	Json       *Js
 	Encryption bool
 	Des        Des
@@ -62,26 +59,12 @@ func (this *Requser)GetError() error {
 }
 
 
-func (this *Requser)InitPostParam() {
-
-	postParam := this.Context.Request().Body()
-	p, err := ioutil.ReadAll(postParam)
-	if err != nil {
-		this.valid.SetError(this.params.key, "Body Error", )
-	}
-
-	this.PostParams, err = url.ParseQuery(string(p))
-	if err != nil {
-		this.valid.SetError(string(p), "Body Error ParseQuery")
-	}
-
-}
 
 func (this *Requser)InitDES() error {
 
 	params := ""
 	this.Json = new(Js)
-	params = this.GetPostParam("params").GetString()
+	params = this.PostParam("params").GetString()
 	//如果是开启了 DES加密 需要验证是否加密,然后需要验证签名,和加密内容
 	if Config.GetBool("system.OpenDES") == true {
 		if params == "" {
@@ -91,10 +74,10 @@ func (this *Requser)InitDES() error {
 
 	if params != "" {
 
-		sign := this.GetPostParam("sign").GetString()
-		timeStamp := this.GetPostParam("timeStamp").GetString()
-		randomNum := this.GetPostParam("randomNum").GetString()
-		isEncrypted := this.GetPostParam("isEncrypted").GetString()
+		sign := this.PostParam("sign").GetString()
+		timeStamp := this.PostParam("timeStamp").GetString()
+		randomNum := this.PostParam("randomNum").GetString()
+		isEncrypted := this.PostParam("isEncrypted").GetString()
 		if sign == "" || timeStamp == "" || randomNum == "" {
 			return errors.New("No Md5 Parameter")
 		}
@@ -141,7 +124,7 @@ func (this *Requser)SetJson(json string) {
 //--------------------------------------------------------获取参数-------------------------------------
 
 //获取加密的参数
-func (this *Requser)GetJsonParam(key string) *Requser {
+func (this *Requser)JsonParam(key string) *Requser {
 
 	json := *this.Json
 	keyList := strings.Split(key, ",")
@@ -168,13 +151,10 @@ func (this *Requser)GetParam(key string) *Requser {
 	return this
 }
 
-//获取参数不分请求类型
-func (this *Requser)GetPostParam(key string) *Requser {
-	str := ""
-	if this.PostParams[key] != nil {
-		str = this.PostParams[key][0]
-	}
+//获取post请求参数
+func (this *Requser)PostParam(key string) *Requser {
 
+	str := this.Context.FormValue(key)
 	param := new(param)
 	param.val = str
 	param.key = key
