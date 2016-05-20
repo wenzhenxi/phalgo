@@ -47,3 +47,14 @@ func (this *Response)RetError(e error, c int) error {
 	this.parameter.Msg = e.Error()
 	return this.Context.JSON(http.StatusOK, this.parameter)
 }
+
+//打印出来byte
+func (this *Response)Write(b []byte) {
+	_, e := this.Context.Response().Write(b)
+	if e != nil{
+		print(e.Error())
+	}
+}
+
+
+
