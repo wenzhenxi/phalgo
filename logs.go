@@ -14,11 +14,11 @@ import (
 )
 
 var LogS *logrus.Logger
-
 var day string
 var logfile *os.File
 
-func init() {
+// 初始化Log日志记录
+func NewLogrus() {
 	var err error
 	LogS = logrus.New()
 	LogS.Formatter = new(logrus.JSONFormatter)
@@ -35,6 +35,7 @@ func init() {
 	day = time.Now().Format("02")
 }
 
+// 检测是否跨天了,把记录记录到新的文件目录中
 func updateLog() {
 	var err error
 	day2 := time.Now().Format("02")
@@ -48,16 +49,19 @@ func updateLog() {
 	}
 }
 
+// 记录Debug信息
 func LogDebug(str interface{}, data logrus.Fields) {
 	updateLog()
 	LogS.WithFields(data).Debug(str)
 }
 
+// 记录Info信息
 func LogInfo(str interface{}, data logrus.Fields) {
 	updateLog()
 	LogS.WithFields(data).Info(str)
 }
 
+// 记录Error信息
 func LogError(str interface{}, data logrus.Fields) {
 	updateLog()
 	LogS.WithFields(data).Error(str)

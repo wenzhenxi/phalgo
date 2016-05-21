@@ -16,43 +16,41 @@ import (
 
 var Echo *echo.Echo
 
-//初始化echo实例
+// 初始化echo实例
 func NewEcho() *echo.Echo {
 
 	Echo = echo.New()
 	return Echo
 }
 
-//使用Fasthttp方式开启服务
+// 使用Fasthttp方式开启服务
 func RunFasthttp(prot string) {
 
 	Echo.Run(fasthttp.New(prot))
 }
 
-//使用Standard的方式开启服务
+// 使用Standard的方式开启服务
 func RunStandard(prot string) {
 
 	Echo.Run(standard.New(prot))
 }
 
-
-//开启这个会对每次请求进行打印
+// 开启这个会对每次请求进行打印
 func Recover() {
 	Echo.Use(middleware.Recover())
 }
 
-//开启这个会对每次请求进行打印
+// 开启这个会对每次请求进行打印
 func Logger() {
 	Echo.Use(middleware.Logger())
 }
 
-//开启gzip压缩
+// 开启gzip压缩
 func Gzip() {
 	Echo.Use(middleware.Gzip())
 }
 
-
-//添加末尾斜杠
+// 添加末尾斜杠
 func AddTrailingSlash() {
 
 	Echo.Use(middleware.AddTrailingSlashWithConfig(middleware.TrailingSlashConfig{
@@ -60,8 +58,7 @@ func AddTrailingSlash() {
 	}))
 }
 
-
-//删除末尾斜杠
+// 删除末尾斜杠
 func RemoveTrailingSlash() {
 
 	Echo.Use(middleware.RemoveTrailingSlashWithConfig(middleware.TrailingSlashConfig{

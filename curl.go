@@ -13,6 +13,7 @@ type Curl struct {
 	curl *httplib.BeegoHTTPRequest
 }
 
+// Get请求
 func (this *Curl)CurlGet(url string) (string, error) {
 
 	this.curl = httplib.Get(url)

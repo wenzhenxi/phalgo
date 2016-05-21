@@ -18,12 +18,15 @@ import (
 
 var Free *freecache.Cache
 
-func init() {
+// 初始化Free进程缓存
+func NewFree() {
 	cacheSize := 100 * 1024 * 1024
 	Free = freecache.NewCache(cacheSize)
 }
 
+// Gob加密
 func GobEncode(data interface{}) ([]byte, error) {
+
 	buf := bytes.NewBuffer(nil)
 	enc := gob.NewEncoder(buf)
 	err := enc.Encode(data)
@@ -33,7 +36,9 @@ func GobEncode(data interface{}) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
+// Gob解密
 func GobDecode(data []byte, to interface{}) error {
+
 	buf := bytes.NewBuffer(data)
 	dec := gob.NewDecoder(buf)
 	return dec.Decode(to)

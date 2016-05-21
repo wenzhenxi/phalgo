@@ -19,7 +19,6 @@ type Js struct {
 }
 
 
-
 //Initialize the json configruation
 func Json(data string) *Js {
 	j := new(Js)

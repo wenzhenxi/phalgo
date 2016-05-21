@@ -13,7 +13,8 @@ import (
 	"net/http"
 )
 
-func OpenPprof(port string) {
+// 开启PProf性能分析
+func OpenPProf(port string) {
 	go func() {
 		log.Println(http.ListenAndServe("localhost:" + port, nil))
 	}()

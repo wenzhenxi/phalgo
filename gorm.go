@@ -16,6 +16,8 @@ import (
 
 var Gorm  map[string]*gorm.DB
 
+
+// 初始化Gorm
 func NewDB(dbname string) {
 	Gorm = make(map[string]*gorm.DB)
 	//默认配置
@@ -53,11 +55,13 @@ func NewDB(dbname string) {
 	defer Gorm[dbname].Close()
 }
 
+// 通过名称获取Gorm实例
 func GetORMByName(dbname string) *gorm.DB {
 
 	return Gorm[dbname]
 }
 
+// 获取默认的Gorm实例
 func GetORM() *gorm.DB {
 	return Gorm["dbDefault"]
 }

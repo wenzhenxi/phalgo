@@ -12,6 +12,7 @@ import (
 
 var Redis redis.Conn
 
+// 初始化Redis连接
 func NewRedis(redisdb string) {
 	var err error
 
