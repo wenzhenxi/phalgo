@@ -9,38 +9,43 @@ package phalgo
 import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
+	_ "github.com/jinzhu/gorm/dialects/mssql"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"fmt"
 )
 
-
-
 var Gorm  map[string]*gorm.DB
 
+func init() {
+	Gorm = make(map[string]*gorm.DB)
+}
 
 // 初始化Gorm
 func NewDB(dbname string) {
-	Gorm = make(map[string]*gorm.DB)
-	//默认配置
-	Config.SetDefault(dbname, map[string]interface{}{
-		"mysqlhost"    : "127.0.0.1",
-		"mysqldb"      : "phalgo",
-		"mysqluser"    : "root",
-		"mysqlpass"    : "",
-		"ports"        :3306,
-		"idleconns_max": 0,
-		"openconns_max": 20,
-	})
 
 	var orm *gorm.DB
-
-	mysqlhost := Config.GetString(dbname + ".mysqlhost")
-	mysqldb := Config.GetString(dbname + ".mysqldb")
-	mysqluser := Config.GetString(dbname + ".mysqluser")
-	mysqlpass := Config.GetString(dbname + ".mysqlpass")
-	ports := Config.GetString(dbname + ".ports")
-
 	var err error
-	orm, err = gorm.Open("mysql", mysqluser + ":" + mysqlpass + "@tcp(" + mysqlhost + ":" + ports + ")/" + mysqldb + "?charset=utf8")
+
+	//默认配置
+	Config.SetDefault(dbname, map[string]interface{}{
+		"dbHost"          : "127.0.0.1",
+		"dbName"          : "phalgo",
+		"dbUser"          : "root",
+		"dbPasswd"        : "",
+		"dbPort"          :3306,
+		"dbIdleconns_max" : 0,
+		"dbOpenconns_max" : 20,
+		"dbType"          : "mysql",
+	})
+	dbHost := Config.GetString(dbname + ".dbHost")
+	dbName := Config.GetString(dbname + ".dbName")
+	dbUser := Config.GetString(dbname + ".dbUser")
+	dbPasswd := Config.GetString(dbname + ".dbPasswd")
+	dbPort := Config.GetString(dbname + ".dbPort")
+	dbType := Config.GetString(dbname + ".dbType")
+
+	orm, err = gorm.Open(dbType, dbUser + ":" + dbPasswd + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8")
 	//开启sql调试模式
 	//GDB.LogMode(true)
 	if err != nil {
@@ -63,5 +68,6 @@ func GetORMByName(dbname string) *gorm.DB {
 
 // 获取默认的Gorm实例
 func GetORM() *gorm.DB {
+
 	return Gorm["dbDefault"]
 }
