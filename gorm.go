@@ -33,7 +33,7 @@ func NewDB(dbname string) {
 		"dbName"          : "phalgo",
 		"dbUser"          : "root",
 		"dbPasswd"        : "",
-		"dbPort"          :3306,
+		"dbPort"          : 3306,
 		"dbIdleconns_max" : 0,
 		"dbOpenconns_max" : 20,
 		"dbType"          : "mysql",
