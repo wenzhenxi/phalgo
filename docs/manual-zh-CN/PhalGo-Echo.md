@@ -1,2 +1,106 @@
-#PhalGo-Echo
+#PhalGo-Echo路由
 
+![](http://i.imgur.com/8HePFuX.png)
+
+Echo官网地址:[https://labstack.com/echo](https://labstack.com/echo "Echo官网地址")
+
+Echo是PhalGo最核心的组件,负责了整体的请求路由返回等功能,并且Echo支持HTTP2协议以及HTTPS协议
+
+
+
+##为什么选择Echo
+
+在初期笔者考虑过Echo,gin以及beego来尝试实现自己的项目,最终还是选择了使用Echo来作为PhalGo的主要路由框架
+
+让我决定的因素是应为Echo支持使用fasthttp所以在效率上面基本其他框架没法比(笔者是个性能狗),我们可以看一下Echo官方的性能图
+
+机器配置:
+
+- Go 1.6
+- wrk 4.0.0
+- 2 GB, 2 Core
+
+![](http://i.imgur.com/VV2MozE.png)
+
+**gin相对来说更人性化一些beego相对更简单易用一些感兴趣的可以尝试一下**
+
+##注册路由
+
+在PhalGo中所有的组件需要使用都需要在入口进行注册
+
+	//初始化ECHO路由
+	phalgo.NewEcho()
+
+然后就可以注册我们的路由了,建议在项目建立一个routes目录中存放路由go文件然后在入口文件中引入
+
+	// Routes 载入路由
+	routes.GetRoutes()
+
+Echo支持restful标准
+	
+	phalgo.Echo.Get()    //接受Get请求
+	phalgo.Echo.Post()   //接受Post请求
+	phalgo.Echo.Delete() //接受Delete请求
+	phalgo.Echo.Put()	 //接受Put请求
+	phalgo.Echo.Any()    //接受所有请求方式
+
+以上所有方式都需要接受两个参数,第一个是请求的路径比如填入**"/test/:id"**,就需要使用**localhost/test/5**这种方式请求,第二个参数必须是一个方法**func(Context) error**例子如下
+
+	func hello(c echo.Context) error {
+	  	return c.String(http.StatusOK, "Hello, World!")
+	}
+
+	//接收Get请求
+	e.GET("/test/:id",hello)
+
+##开启服务
+
+开启服务有两种方式一种是默认的Standard方式一种是Fasthttp,看过上面的对比图也应该之道Fasthttp有多强了把,我们可以在入口文件最后加入如下语句开启服务
+
+	//使用Fasthttp方式
+	phalgo.RunFasthttp(":1333")
+	//使用Standard方式
+	phalgo.RunStandard(":1333")
+
+这样就可以运行一个http服务了
+
+##中间件middleware
+
+Echo有很多好用的中间件,笔者在这里进行了封装,这里简单提及几个以及他们的功能,使用方式只需要在开启服务之前初始化即可
+
+**1.Recover**
+
+使用Recover会打印出打印请求异常信息
+
+	phalgo.Recover()
+
+比如访问一个未注册路由的地址,页面上会打印Not Found,终端上会打印如下语句:
+
+	{"time":"2016-05-24T17:02:12+08:00","level":"ERROR","prefix":"echo","file":"echo.go","line":"226","message":"Not Found"}
+
+**2.Logger**
+
+使用Logger会打印出所有的请求明细,请求IP请求方式,请求花费时间请求地址,请求httpcode等等,方便调试
+
+请求成功:
+
+	{"time":"2016-05-24T17:02:12+08:00","remote_ip":"101.81.5.247","method":"GET","uri":"/","status":200, "latency":194,"latency_human":"194.251µs","rx_bytes":0,"tx_bytes":76}
+
+请求失败:
+
+	{"time":"2016-05-24T17:02:10+08:00","remote_ip":"101.81.5.247","method":"GET","uri":"/s","status":404, "latency":79,"latency_human":"79.126µs","rx_bytes":0,"tx_bytes":9}
+
+**3.Gzip压缩**
+
+在很多时候我们需要开启Gzip压缩来减少返回数据的大小来节约流量可以通过以下方式设置:
+
+	phalgo.Gzip()
+
+**4.末尾斜杠处理**
+
+在匹配路由的时候有一个问题比如我们定义了一个路由是**/test**我们通过**localhost/test/**是请求不到应为末尾多了一个斜杠,这个时候就可以通过中间件的末尾斜杠处理来添加末尾斜杠或者是删除末尾斜杠
+
+	//自动添加末尾斜杠
+	phalgo.AddTrailingSlash()
+	//自动删除末尾斜杠
+	phalgo.RemoveTrailingSlash()

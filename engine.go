@@ -35,12 +35,12 @@ func RunStandard(prot string) {
 	Echo.Run(standard.New(prot))
 }
 
-// 开启这个会对每次请求进行打印
+// 打印请求异常信息
 func Recover() {
 	Echo.Use(middleware.Recover())
 }
 
-// 开启这个会对每次请求进行打印
+// 打印请求信息
 func Logger() {
 	Echo.Use(middleware.Logger())
 }
@@ -50,7 +50,7 @@ func Gzip() {
 	Echo.Use(middleware.Gzip())
 }
 
-// 添加末尾斜杠
+// 自动添加末尾斜杠
 func AddTrailingSlash() {
 
 	Echo.Use(middleware.AddTrailingSlashWithConfig(middleware.TrailingSlashConfig{
@@ -58,7 +58,7 @@ func AddTrailingSlash() {
 	}))
 }
 
-// 删除末尾斜杠
+// 自动删除末尾斜杠
 func RemoveTrailingSlash() {
 
 	Echo.Use(middleware.RemoveTrailingSlashWithConfig(middleware.TrailingSlashConfig{

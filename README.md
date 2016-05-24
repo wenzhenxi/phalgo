@@ -81,8 +81,7 @@ phalgo的升级也很简单:
     //注意会使用到如下依赖(国内可能需要翻墙)
     golang.org/x/net/context
     golang.org/x/sys/unix
-    
-    
+    golang.org/x/crypto/md4
     
 ##联系方式
 
