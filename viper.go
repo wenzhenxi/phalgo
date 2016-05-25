@@ -18,6 +18,7 @@ var Config *viper.Viper
 //初始化配置文件
 func NewConfig(filePath string, fileName string) {
 
+	fmt.Println(GetPath() + "/" + filePath + "/")
 	Config = viper.New()
 	Config.WatchConfig()
 	Config.SetConfigName(fileName)

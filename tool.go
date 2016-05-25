@@ -11,6 +11,8 @@ import (
 	"reflect"
 	"net/url"
 	"os"
+	"strings"
+	"path/filepath"
 )
 
 // 打印当前时间
@@ -136,9 +138,9 @@ func UrlDecode(urls string) (string, error) {
 // 获取项目路径
 func GetPath() string {
 
-	dir, err := os.Getwd()
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		print(err.Error())
 	}
-	return dir
+	return strings.Replace(dir, "\\", "/", -1)
 }
