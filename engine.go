@@ -37,16 +37,19 @@ func RunStandard(prot string) {
 
 // 打印请求异常信息
 func Recover() {
+
 	Echo.Use(middleware.Recover())
 }
 
 // 打印请求信息
 func Logger() {
+
 	Echo.Use(middleware.Logger())
 }
 
 // 开启gzip压缩
 func Gzip() {
+
 	Echo.Use(middleware.Gzip())
 }
 

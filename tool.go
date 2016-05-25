@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"reflect"
 	"net/url"
+	"os"
 )
 
 // 打印当前时间
@@ -130,4 +131,14 @@ func UrlDecode(urls string) (string, error) {
 	}
 
 	return urlStr.Path, nil
+}
+
+// 获取项目路径
+func GetPath() string {
+
+	dir, err := os.Getwd()
+	if err != nil {
+		print(err.Error())
+	}
+	return dir
 }
