@@ -56,8 +56,7 @@ func NewDB(dbname string) {
 	//最大打开连接数
 	orm.DB().SetMaxIdleConns(Config.GetInt(dbname + ".openconns_max"))
 	Gorm[dbname] = orm
-
-	defer Gorm[dbname].Close()
+	//defer Gorm[dbname].Close()
 }
 
 // 通过名称获取Gorm实例
