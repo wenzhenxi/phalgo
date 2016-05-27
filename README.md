@@ -1,4 +1,4 @@
-# PhalGo V 0.0.1
+# PhalGo V 0.0.2
 
 ##前言
 
