@@ -1,10 +1,10 @@
-package phalgo
-
 //	PhalGo-engine
 //	注意路由引擎,依赖Echo对器进行封装
 //	喵了个咪 <wenzhenxi@vip.qq.com> 2016/5/11
 //  依赖情况:
 //			"github.com/labstack/echo"
+
+package phalgo
 
 import (
 	"github.com/labstack/echo/middleware"

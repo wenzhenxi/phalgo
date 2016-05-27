@@ -1,9 +1,10 @@
-package phalgo
-
 //	PhalGo-des
 //	des加解密和3des加解密
 //	喵了个咪 <wenzhenxi@vip.qq.com> 2016/5/11
 //  依赖情况:无依赖
+
+package phalgo
+
 
 import (
 	"bytes"

@@ -1,10 +1,10 @@
-package phalgo
-
 //	PhalGo-Grom
 //	数据库处理,使用Grom
 //	喵了个咪 <wenzhenxi@vip.qq.com> 2016/5/11
 //  依赖情况:
 //			"github.com/jinzhu/gorm"
+
+package phalgo
 
 import (
 	"github.com/jinzhu/gorm"

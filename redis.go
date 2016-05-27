@@ -1,10 +1,10 @@
-package phalgo
-
 //	PhalGo-Redis
 //	Redis操作
 //	喵了个咪 <wenzhenxi@vip.qq.com> 2016/5/11
 //  依赖情况:
 //          "github.com/astaxie/beego/cache" 基于beego的redis操作
+
+package phalgo
 
 import (
 	"github.com/garyburd/redigo/redis"

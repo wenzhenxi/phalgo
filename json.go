@@ -1,10 +1,10 @@
-package phalgo
-
 //	PhalGo-Json
 //	Json解析功能,重写gojson新增部分功能
 //	喵了个咪 <wenzhenxi@vip.qq.com> 2016/5/11
 //  依赖情况: 无依赖
 //  附上gojson地址:github.com/widuu/gojson
+
+package phalgo
 
 import (
 	"encoding/json"

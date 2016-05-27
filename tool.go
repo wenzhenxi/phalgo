@@ -1,9 +1,9 @@
-package phalgo
-
 //	PhalGo-Tool 工具
 //	提供便捷的方法进行类型断言转换,打印当前时间,获取类型
 //	喵了个咪 <wenzhenxi@vip.qq.com> 2016/5/11
 //  依赖情况:无依赖
+
+package phalgo
 
 import (
 	"time"

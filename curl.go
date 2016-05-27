@@ -1,11 +1,10 @@
-package phalgo
-
 //	PhalGo-Curl
 //	调用HTTP请求,依赖beego-curl
 //	喵了个咪 <wenzhenxi@vip.qq.com> 2016/5/11
 //  依赖情况:
 //			"github.com/astaxie/beego"
 
+package phalgo
 
 import "github.com/astaxie/beego/httplib"
 
