@@ -9,14 +9,13 @@ package phalgo
 import "github.com/astaxie/beego/httplib"
 
 type Curl struct {
-	curl *httplib.BeegoHTTPRequest
 }
 
 // Get请求
 func (this *Curl)CurlGet(url string) (string, error) {
 
-	this.curl = httplib.Get(url)
-	str, err := this.curl.String()
+	curl := httplib.Get(url)
+	str, err := curl.String()
 	if err != nil {
 		return "", err
 	}

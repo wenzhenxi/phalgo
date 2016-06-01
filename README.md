@@ -100,6 +100,47 @@ PhalGo的升级也很简单,只需要在项目目录执行:
     golang.org/x/sys/unix
     golang.org/x/crypto/md4
     
+##PhalGo-DOC
+
+**文档正在完善中,多谢大家的支持!**
+
+[[1.1]PhalGo-介绍](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B1.1%5DPhalGo-%E4%BB%8B%E7%BB%8D.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B1.1%5DPhalGo-%E4%BB%8B%E7%BB%8D.md&oid=1988b6ef0dcb6e3b24fdf1080b20ce0f3fe17ff0&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[1.1]PhalGo-介绍")
+
+[[1.2]PhalGo-初识PhalGO](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B1.2%5DPhalGo-%E5%88%9D%E8%AF%86PhalGO.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B1.2%5DPhalGo-%E5%88%9D%E8%AF%86PhalGO.md&oid=c637e5635e37f6d6da8284c87b72857cb45202a7&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[1.2]PhalGo-初识PhalGO")
+
+[[1.3]PhalGo-ADM思想](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B1.3%5DPhalGo-ADM%E6%80%9D%E6%83%B3.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B1.3%5DPhalGo-ADM%E6%80%9D%E6%83%B3.md&oid=b49ba08245398c23baff99902da32a42e70ad44f&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[1.3]PhalGo-ADM思想")
+
+[[1.4]PhalGo-Viper获取配置](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B1.4%5DPhalGo-Viper%E8%8E%B7%E5%8F%96%E9%85%8D%E7%BD%AE.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B1.4%5DPhalGo-Viper%E8%8E%B7%E5%8F%96%E9%85%8D%E7%BD%AE.md&oid=c2e7d84c30a5d0ef9c55672a64b8c301a56ffac2&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[1.4]PhalGo-Viper获取配置")
+
+[[2.1]PhalGo-Echo](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B2.1%5DPhalGo-Echo.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B2.1%5DPhalGo-Echo.md&oid=c95996ae36772e4f423e699c3c2f50b808476d7c&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[2.1]PhalGo-Echo")
+
+[[2.2]PhalGo-请求数据处理](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B2.2%5DPhalGo-%E8%AF%B7%E6%B1%82%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B2.2%5DPhalGo-%E8%AF%B7%E6%B1%82%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86.md&oid=5c861e849db809697986da8bef7438fdbe4b5bd3&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[2.2]PhalGo-请求数据处理")
+
+[[2.3]PhalGo-参数验证过滤](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B2.3%5DPhalGo-%E5%8F%82%E6%95%B0%E9%AA%8C%E8%AF%81%E8%BF%87%E6%BB%A4.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B2.3%5DPhalGo-%E5%8F%82%E6%95%B0%E9%AA%8C%E8%AF%81%E8%BF%87%E6%BB%A4.md&oid=7e9a14c0c92423173ea2aa7b204474c7000c9c4c&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[2.3]PhalGo-参数验证过滤")
+
+[[2.4]PhalGo-返回数据处理](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B2.4%5DPhalGo-%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B2.4%5DPhalGo-%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86.md&oid=1d8861d1f7293283ae894df8cf48289c79998c29&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[2.4]PhalGo-返回数据处理")
+
+[[2.5]PhalGo-异常处理](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B2.5%5DPhalGo-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B2.5%5DPhalGo-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86.md&oid=5d89df0be5cc5088d77eba19505cf2b062822ffa&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[2.5]PhalGo-异常处理")
+
+[[2.6]PhalGo-日志处理](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B2.4%5DPhalGo-%E6%97%A5%E5%BF%97%E5%A4%84%E7%90%86.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B2.4%5DPhalGo-%E6%97%A5%E5%BF%97%E5%A4%84%E7%90%86.md&oid=833def8d3cecc0fc9ecb23b66806e3f088835c5d&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[2.6]PhalGo-日志处理")
+
+[[3.1]PhalGo-Model概述](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B3.1%5DPhalGo-Model%E6%A6%82%E8%BF%B0.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B3.1%5DPhalGo-Model%E6%A6%82%E8%BF%B0.md&oid=2b84962d9cb5080998398db2ed6a749a3e18f703&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[3.1]PhalGo-Model概述")
+
+[[4.1]PhalGo-Redis使用](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B4.1%5DPhalGo-Redis%E4%BD%BF%E7%94%A8.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B4.1%5DPhalGo-Redis%E4%BD%BF%E7%94%A8.md&oid=aca90d7bc8f8e543ed01515f4f91fd3fd4aea1d3&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[4.1]PhalGo-Redis使用")
+
+[[4.2]PhalGo-Free缓存](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B4.2%5DPhalGo-Free%E7%BC%93%E5%AD%98.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B4.2%5DPhalGo-Free%E7%BC%93%E5%AD%98.md&oid=aca90d7bc8f8e543ed01515f4f91fd3fd4aea1d3&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[4.2]PhalGo-Free缓存")
+
+[[4.3]PhalGo-Tool工具](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B4.3%5DPhalGo-Tool%E5%B7%A5%E5%85%B7.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B4.3%5DPhalGo-Tool%E5%B7%A5%E5%85%B7.md&oid=d1ad38b887cde64bd7f9c3fba782ca8e7d6dff33&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[4.3]PhalGo-Tool工具")
+
+[[4.4]PhalGo-Json](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B4.4%5DPhalGo-Json.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B4.4%5DPhalGo-Json.md&oid=d1ad38b887cde64bd7f9c3fba782ca8e7d6dff33&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[4.4]PhalGo-Json")
+
+[[4.5]PhalGo-curl](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B4.5%5DPhalGo-curl.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B4.5%5DPhalGo-curl.md&oid=d1ad38b887cde64bd7f9c3fba782ca8e7d6dff33&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[4.5]PhalGo-curl")
+
+[[4.7]PhalGo-pprof](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B4.7%5DPhalGo-pprof.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B4.7%5DPhalGo-pprof.md&oid=d1ad38b887cde64bd7f9c3fba782ca8e7d6dff33&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[4.7]PhalGo-pprof")
+
+[[4.8]PhalGo-签名和加密.md](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B4.7%5DPhalGo-%E7%AD%BE%E5%90%8D%E5%92%8C%E5%8A%A0%E5%AF%86.md?dir=0&filepath=docs%2Fmanual-zh-CN%2F%5B4.7%5DPhalGo-%E7%AD%BE%E5%90%8D%E5%92%8C%E5%8A%A0%E5%AF%86.md&oid=d1ad38b887cde64bd7f9c3fba782ca8e7d6dff33&sha=8f9d98a3434c7d1caac5e02f4f90648d0324aae6 "[4.8]PhalGo-签名和加密.md")
+
+    
 ##联系方式
 
 个人主页:w-blog.cn
