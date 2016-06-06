@@ -173,6 +173,7 @@ func (this *Requser)Require(b bool) *Requser {
 	this.params.Require = b
 	return this
 }
+
 // JSON参数必须
 func (this *Requser)JsonRequire(b bool) *Requser {
 
@@ -181,8 +182,7 @@ func (this *Requser)JsonRequire(b bool) *Requser {
 	return this
 }
 
-
-//------------------------------------------------获取参数-----------------------------------
+//----------------------------------------------------获取参数------------------------------------
 
 // 获取并且验证参数 string类型 适用于GET或POST参数
 func (this *Requser)GetString() string {

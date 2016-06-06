@@ -18,15 +18,22 @@ var day string
 var logfile *os.File
 
 // 初始化Log日志记录
-func NewLogrus() {
+func init() {
 	var err error
 	LogS = logrus.New()
 	LogS.Formatter = new(logrus.JSONFormatter)
 	//log.Formatter = new(logrus.TextFormatter) // default
 	LogS.Level = logrus.DebugLevel
-	logfile, err = os.OpenFile("Runtime/" + time.Now().Format("2006-01-02") + ".log", os.O_RDWR | os.O_APPEND, 0666)
+
+	if !IsDirExists(GetPath() + "/Runtime") {
+		if mkdirerr := MkdirFile(GetPath() + "/Runtime"); mkdirerr != nil {
+			fmt.Println(mkdirerr)
+		}
+	}
+
+	logfile, err = os.OpenFile(GetPath() + "/Runtime/" + time.Now().Format("2006-01-02") + ".log", os.O_RDWR | os.O_APPEND, 0666)
 	if err != nil {
-		logfile, err = os.Create("Runtime/" + time.Now().Format("2006-01-02") + ".log")
+		logfile, err = os.Create(GetPath() + "/Runtime/" + time.Now().Format("2006-01-02") + ".log")
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -41,7 +48,7 @@ func updateLog() {
 	day2 := time.Now().Format("02")
 	if day2 != day {
 		logfile.Close()
-		logfile, err = os.Create("Runtime/" + time.Now().Format("2006-01-02") + ".log")
+		logfile, err = os.Create(GetPath() + "/Runtime/" + time.Now().Format("2006-01-02") + ".log")
 		if err != nil {
 			fmt.Println(err)
 		}
