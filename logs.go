@@ -43,7 +43,7 @@ func init() {
 }
 
 // 检测是否跨天了,把记录记录到新的文件目录中
-func updateLog() {
+func updateLogFile() {
 	var err error
 	day2 := time.Now().Format("02")
 	if day2 != day {
@@ -58,18 +58,18 @@ func updateLog() {
 
 // 记录Debug信息
 func LogDebug(str interface{}, data logrus.Fields) {
-	updateLog()
+	updateLogFile()
 	LogS.WithFields(data).Debug(str)
 }
 
 // 记录Info信息
 func LogInfo(str interface{}, data logrus.Fields) {
-	updateLog()
+	updateLogFile()
 	LogS.WithFields(data).Info(str)
 }
 
 // 记录Error信息
 func LogError(str interface{}, data logrus.Fields) {
-	updateLog()
+	updateLogFile()
 	LogS.WithFields(data).Error(str)
 }

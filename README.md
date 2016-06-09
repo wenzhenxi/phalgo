@@ -114,7 +114,7 @@ PhalGo的升级也很简单,只需要在项目目录执行:
 
 [[2.1]PhalGo-Echo](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B2.1%5DPhalGo-Echo.md)
 
-[[2.2]PhalGo-请求数据处理](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B2.2%5DPhalGo-%E8%AF%B7%E6%B1%82%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86.md)
+[[2.2]PhalGo-Request](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/[2.2]PhalGo-Request.md)
 
 [[2.3]PhalGo-参数验证过滤](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B2.3%5DPhalGo-%E5%8F%82%E6%95%B0%E9%AA%8C%E8%AF%81%E8%BF%87%E6%BB%A4.md)
 

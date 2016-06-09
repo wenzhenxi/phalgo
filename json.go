@@ -1,5 +1,5 @@
 //	PhalGo-Json
-//	Json解析功能,重写gojson新增部分功能
+//	Json解析功能,重写widuu/gojson新增部分功能
 //	喵了个咪 <wenzhenxi@vip.qq.com> 2016/5/11
 //  依赖情况: 无依赖
 //  附上gojson地址:github.com/widuu/gojson
@@ -9,8 +9,6 @@ package phalgo
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
-	"reflect"
 	"strconv"
 )
 
@@ -31,16 +29,7 @@ func Json(data string) *Js {
 	return j
 }
 
-func (j *Js)GetData() interface{} {
-	return j.Data
-}
 
-func (j *Js)GetSlice() []interface{} {
-	if m, ok := (j.Data).([]interface{}); ok {
-		return m
-	}
-	return nil
-}
 
 //According to the key of the returned data information,return js.data
 func (j *Js) Get(key string) *Js {
@@ -160,6 +149,41 @@ func (j *Js) Getpath(args ...string) *Js {
 	return d
 }
 
+//----------------------------------------新增-------------------------------------
+
+func (j *Js)ToData() interface{} {
+	return j.Data
+}
+
+func (j *Js)ToSlice() []interface{} {
+	if m, ok := (j.Data).([]interface{}); ok {
+		return m
+	}
+	return nil
+}
+
+func (j *Js) ToInt() int {
+	if m, ok := j.Data.(int); ok {
+		return m
+	}
+	return 0
+}
+
+func (j *Js) ToFloat() float64 {
+
+	if m, ok := j.Data.(float64); ok {
+		return m
+	}
+	if m, ok := j.Data.(string); ok {
+		if m, ok := strconv.ParseFloat(m, 64); ok != nil {
+			return m;
+		}
+	}
+	return 0
+}
+
+//----------------------------------------新增----------------------------------------
+
 func (j *Js) Tostring() string {
 	if m, ok := j.Data.(string); ok {
 		return m
@@ -207,6 +231,7 @@ func (j *Js) ToArray() (k, d []string) {
 	return nil, nil
 }
 
+//获取[]string类型,整数和浮点类型会被转换成string
 func (j *Js) StringtoArray() []string {
 	var data []string
 	for _, v := range j.Data.([]interface{}) {
@@ -218,8 +243,4 @@ func (j *Js) StringtoArray() []string {
 		}
 	}
 	return data
-}
-
-func (j *Js) Type() {
-	fmt.Println(reflect.TypeOf(j.Data))
 }

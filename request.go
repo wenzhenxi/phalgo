@@ -127,7 +127,7 @@ func (this *Requser)SetJson(json string) {
 func (this *Requser)JsonParam(key string) *Requser {
 
 	json := *this.Json
-	keyList := strings.Split(key, ",")
+	keyList := strings.Split(key, ".")
 
 	for _, v := range keyList {
 		json.Get(v)
@@ -165,6 +165,24 @@ func (this *Requser)PostParam(key string) *Requser {
 	return this
 }
 
+// 获取请求参数顺序get->post
+func (this *Requser)Param(key string) *Requser {
+
+	var str string
+
+	str = this.Context.QueryParam(key)
+	if str == "" {
+		str = this.Context.FormValue(key)
+	}
+
+	param := new(param)
+	param.val = str
+	param.key = key
+	this.params = param
+
+	return this
+}
+
 //----------------------------------------------------过滤验证------------------------------------
 
 // GET或POST参数必须
@@ -182,7 +200,7 @@ func (this *Requser)JsonRequire(b bool) *Requser {
 	return this
 }
 
-//----------------------------------------------------获取参数------------------------------------
+//--------------------------------------------GET,POST获取参数------------------------------------
 
 // 获取并且验证参数 string类型 适用于GET或POST参数
 func (this *Requser)GetString() string {
@@ -214,6 +232,27 @@ func (this *Requser)GetInt() int {
 
 	return i
 }
+
+// 获取并且验证参数 float64类型 适用于GET或POST参数
+func (this *Requser)GetFloat() float64 {
+
+	//验证参数是否必须传递
+	if this.params.Require == true {
+		if this.params.val == "" {
+			this.valid.SetError(this.params.key, "缺少必要参数,参数名称:")
+		}
+	}
+
+	//转换float64类型
+	i, err := strconv.ParseFloat(this.params.val, 64)
+	if err != nil {
+		this.valid.SetError(this.params.key, "此参数无法转换为float64类型,参数名称:")
+	}
+
+	return i
+}
+
+//--------------------------------------------JSON获取参数------------------------------------
 
 
 // 获取并且验证参数 string类型 适用于Json参数
@@ -247,6 +286,27 @@ func (this *Requser)GetJsonInt() int {
 	i, err := strconv.Atoi(val)
 	if err != nil {
 		this.valid.SetError(this.Jsonparam.key, "此参数无法转换为int类型,参数名称:")
+	}
+
+	return i
+}
+
+// 获取并且验证参数 Float64类型 适用于Json参数
+func (this *Requser)GetJsonFloat() float64 {
+
+	val := this.Jsonparam.val.Tostring()
+
+	//验证参数是否必须传递
+	if this.Jsonparam.Require == true {
+		if val == "" {
+			this.valid.SetError(this.Jsonparam.key, "缺少必要参数,参数名称:")
+		}
+	}
+
+	//转换float64类型
+	i, err := strconv.ParseFloat(this.params.val, 64)
+	if err != nil {
+		this.valid.SetError(this.Jsonparam.key, "此参数无法转换为float64类型,参数名称:")
 	}
 
 	return i
