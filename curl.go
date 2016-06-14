@@ -6,8 +6,10 @@
 
 package phalgo
 
-import "github.com/astaxie/beego/httplib"
-
+import (
+//"github.com/astaxie/beego/httplib"
+	"github.com/wenzhenxi/phalgo/httplib"
+)
 type Curl struct {
 }
 

@@ -1,5 +1,16 @@
 #更新日志
 
+##2016/6/14
+
+1. 完善验证规则
+
+2. 优化Request,Response初始化方式
+
+3. 优化json参数和getpost参数获取规则
+
+4. 对Beego的validation和httplib依赖进行整合
+
+5. 版本提升v0.0.3
 
 ##2016/5/27
 

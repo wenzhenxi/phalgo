@@ -22,6 +22,14 @@ type RetParameter struct {
 	Msg  string     `json:"msg"`
 }
 
+//初始化Response
+func NewResponse(c echo.Context) *Response {
+
+	R := new(Response)
+	R.Context = c
+	return R
+}
+
 // 返回自定自定义的消息Json格式
 func (this *Response)RetCustomize(d interface{}, code int, msg string) error {
 

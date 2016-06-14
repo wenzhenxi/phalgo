@@ -1,4 +1,4 @@
-# PhalGo V 0.0.2
+# PhalGo V 0.0.3
 
 ##前言
 
@@ -54,7 +54,7 @@ PhalGo的升级也很简单,只需要在项目目录执行:
         phalgo.NewEcho()
         // Routes路由
         phalgo.Echo.Get("/", func(c echo.Context) error {
-            Response := phalgo.Response{Context:c}
+            Response := phalgo.NewResponse(c)
             return Response.RetSuccess("hello,world!")
         })
         //开启服务
@@ -74,8 +74,8 @@ PhalGo的升级也很简单,只需要在项目目录执行:
     //配置文件读取
     go get github.com/spf13/viper
     
-    //辅助使用,参数过滤,curl等
-    go get github.com/astaxie/beego
+    //辅助使用,参数过滤,curl等(已经继承到框架内部)
+    github.com/astaxie/beego
     
     //主要路由
     go get github.com/labstack/echo

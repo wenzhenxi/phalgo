@@ -13,6 +13,7 @@ import (
 	"os"
 	"strings"
 	"path/filepath"
+	"strconv"
 )
 
 //当前项目根目录
@@ -30,6 +31,12 @@ func PrintTime(s string) {
 func PrintType(j interface{}) {
 
 	fmt.Println(reflect.TypeOf(j))
+}
+
+//------------------------------------------------类型互转--------------------
+
+func IntTurnString(i int) string {
+	return strconv.Itoa(i)
 }
 
 
@@ -167,7 +174,7 @@ func IsDirExists(path string) bool {
 }
 
 //创建文件
-func  MkdirFile(path string) error {
+func MkdirFile(path string) error {
 
 	err := os.Mkdir(path, os.ModePerm)  //在当前目录下生成md目录
 	if err != nil {

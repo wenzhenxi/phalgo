@@ -17,14 +17,14 @@ type Des struct {
 }
 
 
-func (this *Des)DesEncrypt(origData, key []byte) ([]byte, error) {
-	block, err := des.NewCipher(key)
+func (this *Des)DesEncrypt(origData []byte, key string, iv string) ([]byte, error) {
+	block, err := des.NewCipher([]byte(key))
 	if err != nil {
 		return nil, err
 	}
 	origData = this.PKCS5Padding(origData, block.BlockSize())
 	// origData = ZeroPadding(origData, block.BlockSize())
-	blockMode := cipher.NewCBCEncrypter(block, key)
+	blockMode := cipher.NewCBCEncrypter(block, []byte(iv))
 	crypted := make([]byte, len(origData))
 	// 根据CryptBlocks方法的说明，如下方式初始化crypted也可以
 	// crypted := origData
@@ -32,12 +32,12 @@ func (this *Des)DesEncrypt(origData, key []byte) ([]byte, error) {
 	return crypted, nil
 }
 
-func (this *Des)DesDecrypt(crypted, key []byte) ([]byte, error) {
-	block, err := des.NewCipher(key)
+func (this *Des)DesDecrypt(crypted []byte, key string, iv string) ([]byte, error) {
+	block, err := des.NewCipher([]byte(key))
 	if err != nil {
 		return nil, err
 	}
-	blockMode := cipher.NewCBCDecrypter(block, key)
+	blockMode := cipher.NewCBCDecrypter(block, []byte(iv))
 	origData := make([]byte, len(crypted))
 	// origData := crypted
 	blockMode.CryptBlocks(origData, crypted)
