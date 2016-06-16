@@ -19,7 +19,7 @@ type Response struct {
 type RetParameter struct {
 	Code int         `json:"code"`
 	Data interface{} `json:"data"`
-	Msg  string     `json:"msg"`
+	Msg  string      `json:"msg"`
 }
 
 //初始化Response

@@ -17,6 +17,7 @@ import (
 	"encoding/hex"
 	"encoding/base64"
 	"strings"
+	"regexp"
 )
 
 
@@ -396,12 +397,22 @@ func (this *Request)Email() {
 }
 
 // 正则匹配,其他类型都将被转成字符串再匹配(fmt.Sprintf(“%v”, obj).Match)
-func (this *Request)Match() {
+func (this *Request)Match(match string) {
 
 	if this.jsonTag == true {
-		this.valid.Email(this.Jsonparam.val.Tostring(), this.params.key).Message("邮箱格式验证失败,参数名称:")
+		this.valid.Match(this.Jsonparam.val.Tostring(), regexp.MustCompile(match), this.params.key).Message("正则验证失败,参数名称:")
 	}else {
-		this.valid.Email(this.params.val, this.params.key).Message("邮箱格式验证失败,参数名称:")
+		this.valid.Match(this.params.val, regexp.MustCompile(match), this.params.key).Message("正则验证失败,参数名称:")
+	}
+}
+
+// 反正则匹配,其他类型都将被转成字符串再匹配(fmt.Sprintf(“%v”, obj).Match)
+func (this *Request)NoMatch(match string) {
+
+	if this.jsonTag == true {
+		this.valid.NoMatch(this.Jsonparam.val.Tostring(), regexp.MustCompile(match), this.params.key).Message("邮箱格式验证失败,参数名称:")
+	}else {
+		this.valid.NoMatch(this.params.val, regexp.MustCompile(match), this.params.key).Message("邮箱格式验证失败,参数名称:")
 	}
 }
 

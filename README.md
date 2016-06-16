@@ -74,7 +74,7 @@ PhalGo的升级也很简单,只需要在项目目录执行:
     //配置文件读取
     go get github.com/spf13/viper
     
-    //辅助使用,参数过滤,curl等(已经继承到框架内部)
+    //辅助使用,参数过滤,curl等(已经集成到框架)
     github.com/astaxie/beego
     
     //主要路由
