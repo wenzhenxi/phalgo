@@ -22,9 +22,10 @@ PhalGo是对PhalApi和PhalCon的致敬,吸取了一些好的思想,应为是使�
 
 glide工具的安装也很简单可以参考:https://github.com/Masterminds/glide
 
-我们只需要在我们的项目目录建立**glide.yaml**文件加以下内容然后执行**glide install**便会自动开始安装
+我们只需要在我们的项目目录建立**glide.yaml**文件加以下内容然后执行**glide install**便会自动开始安装,package: 后面更项目名称
 
-    package: phalgo-sample     //你的项目名称
+
+    package: phalgo-sample     
     import:
     - package: github.com/wenzhenxi/phalgo
 
