@@ -53,6 +53,12 @@ func Gzip() {
 	Echo.Use(middleware.Gzip())
 }
 
+// 设置Body大小
+func BodyLimit(str string) {
+
+	Echo.Use(middleware.BodyLimit(str))
+}
+
 // 自动添加末尾斜杠
 func AddTrailingSlash() {
 

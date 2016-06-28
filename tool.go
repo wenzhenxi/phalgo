@@ -39,7 +39,6 @@ func IntTurnString(i int) string {
 	return strconv.Itoa(i)
 }
 
-
 //------------------------------------------------以下都是从接口类型进行类型断言转换---------------------
 
 // 从接口类型转换到[]byte
@@ -117,6 +116,17 @@ func TurnFloat64(i interface{}) float64 {
 	}
 
 	return 0
+}
+
+// 从接口类型转换到接口切片
+func TurnSlice(i interface{}) []interface{} {
+
+	j, p := i.([]interface{})
+	if p {
+		return j
+	}
+
+	return nil
 }
 
 //---------------------urlcode

@@ -10,13 +10,11 @@ package phalgo
 import (
 	"strconv"
 	"github.com/labstack/echo"
-//"github.com/astaxie/beego/validation"
 	"github.com/wenzhenxi/phalgo/validation"
 	"errors"
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/base64"
-	"strings"
 	"regexp"
 )
 
@@ -142,14 +140,14 @@ func (this *Request)SetJson(json string) {
 //--------------------------------------------------------获取参数-------------------------------------
 
 // 获取Json参数
-func (this *Request)JsonParam(key string) *Request {
+func (this *Request)JsonParam(keys ...string) *Request {
 
+	var key string
 	this.Clean()
 	json := *this.Json
-	keyList := strings.Split(key, ".")
-
-	for _, v := range keyList {
+	for _, v := range keys {
 		json.Get(v)
+		key = key + v
 	}
 
 	this.Jsonparam.val = json
