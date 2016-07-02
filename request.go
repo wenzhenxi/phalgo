@@ -16,6 +16,7 @@ import (
 	"encoding/hex"
 	"encoding/base64"
 	"regexp"
+	"fmt"
 )
 
 
@@ -195,6 +196,18 @@ func (this *Request)Param(key string) *Request {
 	this.params.val = str
 	this.params.key = key
 
+	return this
+}
+
+func (this *Request)SetDefault(val string) *Request {
+	if this.jsonTag == true {
+		defJson := fmt.Sprintf(`{"index":"%s"}`, val)
+		this.Jsonparam.val = *Json(defJson).Get("index")
+		fmt.Println(defJson)
+		fmt.Println(this.Jsonparam.val.Tostring())
+	}else {
+		this.params.val = val
+	}
 	return this
 }
 
