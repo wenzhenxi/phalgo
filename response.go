@@ -22,6 +22,8 @@ type RetParameter struct {
 	Msg  string      `json:"msg"`
 }
 
+const DefaultCode = 1
+
 //初始化Response
 func NewResponse(c echo.Context) *Response {
 
@@ -45,7 +47,7 @@ func (this *Response)RetCustomize(d interface{}, code int, msg string) error {
 func (this *Response)RetSuccess(d interface{}) error {
 
 	this.parameter = new(RetParameter)
-	this.parameter.Code = 1
+	this.parameter.Code = DefaultCode
 	this.parameter.Data = d
 
 	return this.Context.JSON(http.StatusOK, this.parameter)

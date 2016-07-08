@@ -41,9 +41,14 @@ func Recover() {
 	Echo.Use(middleware.Recover())
 }
 
-//是否开启debug
+// 是否开启debug
 func SetDebug(on bool) {
 	Echo.SetDebug(on)
+}
+
+// 获取debug状态
+func Debug() bool {
+	return Echo.Debug()
 }
 
 // 打印请求信息

@@ -226,17 +226,19 @@ func (this *Request)Require(b bool) *Request {
 	return this
 }
 
-func (this *Request)Max(f int) *Request {
+// 设置参数最大值
+func (this *Request)Max(i int) *Request {
 
-	this.params.max = f
-	this.Jsonparam.max = f
+	this.params.max = i
+	this.Jsonparam.max = i
 	return this
 }
 
-func (this *Request)Min(f int) *Request {
+//设置参数最小值
+func (this *Request)Min(i int) *Request {
 
-	this.params.min = f
-	this.Jsonparam.min = f
+	this.params.min = i
+	this.Jsonparam.min = i
 	return this
 }
 
@@ -283,7 +285,6 @@ func (this *Request)GetInt() int {
 	if this.params.val == "" {
 		i = 0
 	}else {
-		//转换Int类型
 		i, err = strconv.Atoi(this.params.val)
 		if err != nil {
 			this.valid.SetError(this.params.key, "参数异常!参数不是int类型,参数名称:")
@@ -323,7 +324,6 @@ func (this *Request)GetFloat() float64 {
 	if this.params.val == "" {
 		i = 0
 	}else {
-		//转换float64类型
 		i, err = strconv.ParseFloat(this.params.val, 64)
 		if err != nil {
 			this.valid.SetError(this.params.key, "此参数无法转换为float64类型,参数名称:")
