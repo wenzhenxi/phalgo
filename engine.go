@@ -14,13 +14,26 @@ import (
 	"net/http"
 )
 
-var Echo *echo.Echo
+const (
+	RETJSON = 1
+	RETMXL = 2
+)
 
+var (
+	Echo *echo.Echo
+	RetType int = 1
+)
 // 初始化echo实例
 func NewEcho() *echo.Echo {
 
 	Echo = echo.New()
 	return Echo
+}
+
+// 设置Ret格式
+func SetRetType(i int) {
+
+	RetType = i
 }
 
 // 使用Fasthttp方式开启服务

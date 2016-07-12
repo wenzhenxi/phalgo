@@ -17,51 +17,75 @@ type Response struct {
 }
 
 type RetParameter struct {
-	Code int         `json:"code"`
-	Data interface{} `json:"data"`
-	Msg  string      `json:"msg"`
+	Code int         `json:"code";xml:"code"`
+	Data interface{} `json:"data";xml:"data"`
+	Msg  string      `json:"msg";xml:"msg"`
 }
 
 const DefaultCode = 1
 
-//初始化Response
+var HttpStatus = http.StatusOK
+
+// 初始化Response
 func NewResponse(c echo.Context) *Response {
 
 	R := new(Response)
 	R.Context = c
+	R.parameter = new(RetParameter)
+	R.parameter.Data = nil
 	return R
 }
 
-// 返回自定自定义的消息Json格式
-func (this *Response)RetCustomize(d interface{}, code int, msg string) error {
+// 设置返回的Status值默认http.StatusOK
+func (this *Response)SetStatus(i int) {
+	HttpStatus = i
+}
 
-	this.parameter = new(RetParameter)
+func (this *Response)SetMsg(s string) {
+	this.parameter.Msg = s
+}
+
+func (this *Response)SetData(d interface{}) {
+	this.parameter.Data = d
+}
+
+// 返回自定自定义的消息格式
+func (this *Response)RetCustomize(code int, d interface{}, msg string) error {
+
 	this.parameter.Code = code
 	this.parameter.Data = d
 	this.parameter.Msg = msg
 
-	return this.Context.JSON(http.StatusOK, this.parameter)
+	return this.Ret(this.parameter)
 }
 
-// 返回成功的结果JSON格式 默认code为1
+// 返回成功的结果 默认code为1
 func (this *Response)RetSuccess(d interface{}) error {
 
-	this.parameter = new(RetParameter)
 	this.parameter.Code = DefaultCode
 	this.parameter.Data = d
 
-	return this.Context.JSON(http.StatusOK, this.parameter)
+	return this.Ret(this.parameter)
 }
 
-// 返回失败结果JSON格式
+// 返回失败结果
 func (this *Response)RetError(e error, c int) error {
 
-	this.parameter = new(RetParameter)
 	this.parameter.Code = c
-	this.parameter.Data = nil
 	this.parameter.Msg = e.Error()
 
-	return this.Context.JSON(http.StatusOK, this.parameter)
+	return this.Ret(this.parameter)
+}
+
+// 返回结果
+func (this *Response)Ret(par interface{}) error {
+
+	switch RetType {
+	case 2:
+		return this.Context.XML(HttpStatus, par)
+	default:
+		return this.Context.JSON(HttpStatus, par)
+	}
 }
 
 // 输出返回结果
