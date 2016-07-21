@@ -19,7 +19,6 @@ import (
 	"fmt"
 )
 
-
 type Request struct {
 	Context    echo.Context
 	params     *param
@@ -77,58 +76,63 @@ func (this *Request)InitDES() error {
 
 	params := ""
 	this.Json = new(Js)
-	params = this.PostParam("params").GetString()
-
+	params = this.PostParam(Config.GetString("DES.DESParam")).GetString()
+	debug := this.PostParam("__debug__")
 	//如果是开启了 DES加密 需要验证是否加密,然后需要验证签名,和加密内容
-	if Config.GetBool("system.OpenDES") == true {
+	if Config.GetBool("system.OpenDES") == true && debug != "1"{
 		if params == "" {
 			return errors.New("No params")
-		}
-	}
+		} else {
+			enableSignCheck := Config.GetBool("DES.EnableSignCheck")
+			if enableSignCheck {
+				sign := this.PostParam("sign").GetString()
+				timeStamp := this.PostParam("timeStamp").GetString()
+				randomNum := this.PostParam("randomNum").GetString()
+				isEncrypted := this.PostParam("isEncrypted").GetString()
+				if sign == "" || timeStamp == "" || randomNum == "" {
+					return errors.New("No Md5 Parameter")
+				}
 
-	if params != "" {
+				keymd5 := md5.New()
+				keymd5.Write([]byte(Config.GetString("system.MD5key")))
+				md5key := hex.EncodeToString(keymd5.Sum(nil))
 
-		sign := this.PostParam("sign").GetString()
-		timeStamp := this.PostParam("timeStamp").GetString()
-		randomNum := this.PostParam("randomNum").GetString()
-		isEncrypted := this.PostParam("isEncrypted").GetString()
-		if sign == "" || timeStamp == "" || randomNum == "" {
-			return errors.New("No Md5 Parameter")
-		}
+				signmd5 := md5.New()
+				signmd5.Write([]byte(params + isEncrypted + timeStamp + randomNum + md5key))
+				sign2 := hex.EncodeToString(signmd5.Sum(nil))
 
-		keymd5 := md5.New()
-		keymd5.Write([]byte(Config.GetString("system.MD5key")))
-		md5key := hex.EncodeToString(keymd5.Sum(nil))
-
-		signmd5 := md5.New()
-		signmd5.Write([]byte(params + isEncrypted + timeStamp + randomNum + md5key))
-		sign2 := hex.EncodeToString(signmd5.Sum(nil))
-
-		if sign != sign2 {
-			return errors.New("No Md5 Failure")
-		}
-
-		//如果是加密的params那么进行解密操作
-		if isEncrypted == "1" {
-
+				if sign != sign2 {
+					return errors.New("No Md5 Failure")
+				}
+			}
+			//此处不需要比较isEncrypted,既然使用initDES肯定是再用DES加密了
 			base64params, err := base64.StdEncoding.DecodeString(params)
 			if err != nil {
 				return err
 			}
-
-			origData, err := this.Des.DesDecrypt(base64params, Config.GetString("system.DESkey"), Config.GetString("system.DESiv"))
+			ecbMode := Config.GetBool("DES.ECBMode")
+			var origData []byte
+			switch ecbMode {
+			case true:
+				origData, err = this.Des.DesDecryptECB(base64params, Config.GetString("system.DESkey"))
+				break
+			case false:
+				origData, err = this.Des.DesDecrypt(base64params, Config.GetString("system.DESkey"), Config.GetString("system.DESiv"))
+				break
+			}
 			if err != nil {
 				return err
 			}
 			params = string(origData)
+
+			this.Json = Json(params)
+			this.Encryption = true
 		}
-		this.Json = Json(params)
-		this.Encryption = true
-	}else {
-		this.Encryption = false
+		return nil;
+	} else {
+		return errors.New("config.DES.OpenDES disable");
 	}
 
-	return nil;
 }
 
 // 使用Json参数传入Json字符
@@ -205,7 +209,7 @@ func (this *Request)SetDefault(val string) *Request {
 		this.Jsonparam.val = *Json(defJson).Get("index")
 		fmt.Println(defJson)
 		fmt.Println(this.Jsonparam.val.Tostring())
-	}else {
+	} else {
 		this.params.val = val
 	}
 	return this
@@ -219,7 +223,7 @@ func (this *Request)Require(b bool) *Request {
 	//验证参数是否必须传递
 	if this.jsonTag == true {
 		this.valid.Required(this.Jsonparam.val.Tostring(), this.Jsonparam.key).Message("缺少必要参数,参数名称:")
-	}else {
+	} else {
 		this.valid.Required(this.params.val, this.params.key).Message("缺少必要参数,参数名称:")
 	}
 
@@ -254,21 +258,21 @@ func (this *Request)GetString() string {
 		str = this.Jsonparam.val.Tostring()
 		if this.Jsonparam.min != 0 {
 			this.valid.MinSize(str, this.Jsonparam.min, this.Jsonparam.key).
-			Message("参数异常!参数长度为%d不能小于%d,参数名称:", len([]rune(str)), this.Jsonparam.min)
+				Message("参数异常!参数长度为%d不能小于%d,参数名称:", len([]rune(str)), this.Jsonparam.min)
 		}
 		if this.Jsonparam.max != 0 {
 			this.valid.MaxSize(str, this.Jsonparam.max, this.Jsonparam.key).
-			Message("参数异常!参数长度为%d不能大于%d,参数名称:", len([]rune(str)), this.Jsonparam.max)
+				Message("参数异常!参数长度为%d不能大于%d,参数名称:", len([]rune(str)), this.Jsonparam.max)
 		}
-	}else {
+	} else {
 		str = this.params.val
 		if this.params.min != 0 {
 			this.valid.MinSize(str, this.params.min, this.params.key).
-			Message("参数异常!参数长度为%d不能小于%d,参数名称:", len([]rune(str)), this.params.min)
+				Message("参数异常!参数长度为%d不能小于%d,参数名称:", len([]rune(str)), this.params.min)
 		}
 		if this.params.max != 0 {
 			this.valid.MaxSize(str, this.params.max, this.params.key).
-			Message("参数异常!参数长度为%d不能大于%d,参数名称:", len([]rune(str)), this.params.max)
+				Message("参数异常!参数长度为%d不能大于%d,参数名称:", len([]rune(str)), this.params.max)
 		}
 	}
 
@@ -284,7 +288,7 @@ func (this *Request)GetInt() int {
 
 	if this.params.val == "" {
 		i = 0
-	}else {
+	} else {
 		i, err = strconv.Atoi(this.params.val)
 		if err != nil {
 			this.valid.SetError(this.params.key, "参数异常!参数不是int类型,参数名称:")
@@ -293,20 +297,20 @@ func (this *Request)GetInt() int {
 	if this.jsonTag == true {
 		if this.Jsonparam.min != 0 {
 			this.valid.Min(i, this.Jsonparam.min, this.Jsonparam.key).
-			Message("参数异常!参数值为%d不能小于%d,参数名称:", i, this.Jsonparam.min)
+				Message("参数异常!参数值为%d不能小于%d,参数名称:", i, this.Jsonparam.min)
 		}
 		if this.Jsonparam.max != 0 {
 			this.valid.Max(i, this.Jsonparam.max, this.Jsonparam.key).
-			Message("参数异常!参数值为%d不能大于%d,参数名称:", i, this.Jsonparam.max)
+				Message("参数异常!参数值为%d不能大于%d,参数名称:", i, this.Jsonparam.max)
 		}
-	}else {
+	} else {
 		if this.params.min != 0 {
 			this.valid.Min(i, this.params.min, this.params.key).
-			Message("参数异常!参数值为%d不能小于%d,参数名称:", i, this.params.min)
+				Message("参数异常!参数值为%d不能小于%d,参数名称:", i, this.params.min)
 		}
 		if this.params.max != 0 {
 			this.valid.Max(i, this.params.max, this.params.key).
-			Message("参数异常!参数值为%d不能大于%d,参数名称:", i, this.params.max)
+				Message("参数异常!参数值为%d不能大于%d,参数名称:", i, this.params.max)
 		}
 	}
 
@@ -323,7 +327,7 @@ func (this *Request)GetFloat() float64 {
 
 	if this.params.val == "" {
 		i = 0
-	}else {
+	} else {
 		i, err = strconv.ParseFloat(this.params.val, 64)
 		if err != nil {
 			this.valid.SetError(this.params.key, "此参数无法转换为float64类型,参数名称:")
@@ -333,20 +337,20 @@ func (this *Request)GetFloat() float64 {
 	if this.jsonTag == true {
 		if this.Jsonparam.min != 0 {
 			this.valid.Min(int(i), this.Jsonparam.min, this.Jsonparam.key).
-			Message("参数异常!参数值为%f不能小于%d,参数名称:", i, this.Jsonparam.min)
+				Message("参数异常!参数值为%f不能小于%d,参数名称:", i, this.Jsonparam.min)
 		}
 		if this.Jsonparam.max != 0 {
 			this.valid.Max(int(i), this.Jsonparam.max, this.Jsonparam.key).
-			Message("参数异常!参数值为%f不能大于%d,参数名称:", i, this.Jsonparam.max)
+				Message("参数异常!参数值为%f不能大于%d,参数名称:", i, this.Jsonparam.max)
 		}
-	}else {
+	} else {
 		if this.params.min != 0 {
 			this.valid.Min(int(i), this.params.min, this.params.key).
-			Message("参数异常!参数值为%f不能小于%d,参数名称:", i, this.params.min)
+				Message("参数异常!参数值为%f不能小于%d,参数名称:", i, this.params.min)
 		}
 		if this.params.max != 0 {
 			this.valid.Max(int(i), this.params.max, this.params.key).
-			Message("参数异常!参数值为%f不能大于%d,参数名称:", i, this.params.max)
+				Message("参数异常!参数值为%f不能大于%d,参数名称:", i, this.params.max)
 		}
 	}
 
@@ -358,7 +362,7 @@ func (this *Request)ZipCode() *Request {
 
 	if this.jsonTag == true {
 		this.valid.ZipCode(this.Jsonparam.val.Tostring(), this.params.key).Message("参数异常!邮政编码验证失败,参数名称:")
-	}else {
+	} else {
 		this.valid.ZipCode(this.params.val, this.params.key).Message("参数异常!邮政编码验证失败,参数名称:")
 	}
 	return this
@@ -369,7 +373,7 @@ func (this *Request)Phone() *Request {
 
 	if this.jsonTag == true {
 		this.valid.Phone(this.Jsonparam.val.Tostring(), this.params.key).Message("参数异常!手机号或固定电话号验证失败,参数名称:")
-	}else {
+	} else {
 		this.valid.Phone(this.params.val, this.params.key).Message("参数异常!手机号或固定电话号验证失败,参数名称:")
 	}
 	return this
@@ -380,7 +384,7 @@ func (this *Request)Tel() *Request {
 
 	if this.jsonTag == true {
 		this.valid.Tel(this.Jsonparam.val.Tostring(), this.params.key).Message("参数异常!固定电话号验证失败,参数名称:")
-	}else {
+	} else {
 		this.valid.Tel(this.params.val, this.params.key).Message("参数异常!固定电话号验证失败,参数名称:")
 	}
 	return this
@@ -391,7 +395,7 @@ func (this *Request)Mobile() *Request {
 
 	if this.jsonTag == true {
 		this.valid.Mobile(this.Jsonparam.val.Tostring(), this.params.key).Message("参数异常!手机号验证失败,参数名称:")
-	}else {
+	} else {
 		this.valid.Mobile(this.params.val, this.params.key).Message("参数异常!手机号验证失败,参数名称:")
 	}
 	return this
@@ -402,7 +406,7 @@ func (this *Request)Base64() *Request {
 
 	if this.jsonTag == true {
 		this.valid.Base64(this.Jsonparam.val.Tostring(), this.params.key).Message("参数异常!base64编码验证失败,参数名称:")
-	}else {
+	} else {
 		this.valid.Base64(this.params.val, this.params.key).Message("参数异常!base64编码验证失败,参数名称:")
 	}
 	return this
@@ -413,7 +417,7 @@ func (this *Request)IP() *Request {
 
 	if this.jsonTag == true {
 		this.valid.IP(this.Jsonparam.val.Tostring(), this.params.key).Message("参数异常!IP格式验证失败,参数名称:")
-	}else {
+	} else {
 		this.valid.IP(this.params.val, this.params.key).Message("参数异常!IP格式验证失败,参数名称:")
 	}
 	return this
@@ -424,7 +428,7 @@ func (this *Request)Email() *Request {
 
 	if this.jsonTag == true {
 		this.valid.Email(this.Jsonparam.val.Tostring(), this.params.key).Message("参数异常!邮箱格式验证失败,参数名称:")
-	}else {
+	} else {
 		this.valid.Email(this.params.val, this.params.key).Message("参数异常!邮箱格式验证失败,参数名称:")
 	}
 	return this
@@ -435,7 +439,7 @@ func (this *Request)Match(match string) *Request {
 
 	if this.jsonTag == true {
 		this.valid.Match(this.Jsonparam.val.Tostring(), regexp.MustCompile(match), this.params.key).Message("参数异常!正则验证失败,参数名称:")
-	}else {
+	} else {
 		this.valid.Match(this.params.val, regexp.MustCompile(match), this.params.key).Message("参数异常!正则验证失败,参数名称:")
 	}
 	return this
@@ -446,7 +450,7 @@ func (this *Request)NoMatch(match string) *Request {
 
 	if this.jsonTag == true {
 		this.valid.NoMatch(this.Jsonparam.val.Tostring(), regexp.MustCompile(match), this.params.key).Message("参数异常!邮箱格式验证失败,参数名称:")
-	}else {
+	} else {
 		this.valid.NoMatch(this.params.val, regexp.MustCompile(match), this.params.key).Message("参数异常!邮箱格式验证失败,参数名称:")
 	}
 	return this
@@ -457,7 +461,7 @@ func (this *Request)Numeric() *Request {
 
 	if this.jsonTag == true {
 		this.valid.Numeric(this.Jsonparam.val.Tostring(), this.params.key).Message("参数异常!数字格式验证失败,参数名称:")
-	}else {
+	} else {
 		this.valid.Numeric(this.params.val, this.params.key).Message("参数异常!数字格式验证失败,参数名称:")
 	}
 	return this
@@ -468,7 +472,7 @@ func (this *Request)Alpha() *Request {
 
 	if this.jsonTag == true {
 		this.valid.Alpha(this.Jsonparam.val.Tostring(), this.params.key).Message("参数异常!alpha格式验证失败,参数名称:")
-	}else {
+	} else {
 		this.valid.Alpha(this.params.val, this.params.key).Message("参数异常!alpha格式验证失败,参数名称:")
 	}
 	return this
@@ -479,7 +483,7 @@ func (this *Request)AlphaNumeric() *Request {
 
 	if this.jsonTag == true {
 		this.valid.AlphaNumeric(this.Jsonparam.val.Tostring(), this.params.key).Message("参数异常!AlphaNumeric格式验证失败,参数名称:")
-	}else {
+	} else {
 		this.valid.AlphaNumeric(this.params.val, this.params.key).Message("参数异常!AlphaNumeric格式验证失败,参数名称:")
 	}
 	return this
@@ -490,7 +494,7 @@ func (this *Request)AlphaDash() *Request {
 
 	if this.jsonTag == true {
 		this.valid.AlphaDash(this.Jsonparam.val.Tostring(), this.params.key).Message("参数异常!AlphaDash格式验证失败,参数名称:")
-	}else {
+	} else {
 		this.valid.AlphaDash(this.params.val, this.params.key).Message("参数异常!AlphaDash格式验证失败,参数名称:")
 	}
 	return this
