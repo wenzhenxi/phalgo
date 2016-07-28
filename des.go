@@ -46,6 +46,52 @@ func (this *Des)DesDecrypt(crypted []byte, key string, iv string) ([]byte, error
 	return origData, nil
 }
 
+/*
+DES/ECB/PKCS5Padding   加密
+ */
+func (this *Des)DesEncryptECB(origData []byte, key string ) ([]byte, error) {
+	block, err := des.NewCipher([]byte(key))
+	if err != nil {
+		return nil, err
+	}
+	bs := block.BlockSize()
+	origData = this.PKCS5Padding(origData, bs)
+	if len(origData)%bs != 0 {
+		return nil,err
+	}
+	crypted := make([]byte, len(origData))
+	dst := crypted
+	for len(origData) > 0 {
+		block.Encrypt(dst, origData[:bs])
+		origData = origData[bs:]
+		dst = dst[bs:]
+	}
+
+	return crypted, nil
+}
+/*
+DES/ECB/PKCS5Padding   解密
+ */
+func (this *Des)DesDecryptECB(crypted []byte, key string ) ([]byte, error) {
+	block, err := des.NewCipher([]byte(key))
+	if err != nil {
+		return nil, err
+	}
+	bs := block.BlockSize()
+	if len(crypted)%bs != 0 {
+		return nil, err
+	}
+	origData := make([]byte, len(crypted))
+	dst := origData
+	for len(crypted) > 0 {
+		block.Decrypt(dst, crypted[:bs])
+		crypted = crypted[bs:]
+		dst = dst[bs:]
+	}
+	origData = this.PKCS5UnPadding(origData)
+	return origData, nil
+}
+
 func (this *Des)ZeroPadding(ciphertext []byte, blockSize int) []byte {
 	padding := blockSize - len(ciphertext) % blockSize
 	padtext := bytes.Repeat([]byte{0}, padding)
