@@ -77,7 +77,7 @@ func (this *Request)InitDES() error {
 	params := ""
 	this.Json = new(Js)
 	params = this.PostParam(Config.GetString("DES.DESParam")).GetString()
-	debug := this.PostParam("__debug__")
+	debug := this.PostParam("__debug__").GetString()
 	//如果是开启了 DES加密 需要验证是否加密,然后需要验证签名,和加密内容
 	if Config.GetBool("system.OpenDES") == true && debug != "1"{
 		if params == "" {
@@ -130,9 +130,8 @@ func (this *Request)InitDES() error {
 		}
 		return nil;
 	} else {
-		return errors.New("config.DES.OpenDES disable");
+		return errors.New("debug");
 	}
-
 }
 
 // 使用Json参数传入Json字符
