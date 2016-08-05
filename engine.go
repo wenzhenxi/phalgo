@@ -17,6 +17,7 @@ import (
 const (
 	RETJSON = 1
 	RETMXL = 2
+	RETDES = 3
 )
 
 var (

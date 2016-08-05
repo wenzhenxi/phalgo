@@ -19,7 +19,12 @@ func NewConfig(filePath string, fileName string) {
 	Config = viper.New()
 	Config.WatchConfig()
 	Config.SetConfigName(fileName)
-	Config.AddConfigPath(GetPath() + "/" + filePath + "/")
+	//filePath支持相对路径和绝对路径 etc:"/a/b" "b" "./b"
+	if (filePath[:1] != "/"){
+		Config.AddConfigPath(GetPath() + "/" + filePath + "/")
+	}else{
+		Config.AddConfigPath(filePath + "/")
+	}
 	// 找到并读取配置文件并且 处理错误读取配置文件
 	if err := Config.ReadInConfig(); err != nil {
 		panic(fmt.Errorf("Fatal error config file: %s \n", err).Error())
