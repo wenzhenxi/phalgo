@@ -83,6 +83,8 @@ func (this *Response)Ret(par interface{}) error {
 	switch RetType {
 	case 2:
 		return this.Context.XML(HttpStatus, par)
+	case 3:
+		return this.Context.DES(HttpStatus, par, Config.GetString("system.DESkey"))
 	default:
 		return this.Context.JSON(HttpStatus, par)
 	}
