@@ -51,7 +51,7 @@ func NewRequest(c echo.Context) *Request {
 	//增加debug参数的匹配
 	if R.Param("__debug__").SetDefault("").GetString() == "" {
 		R.Debug = false
-	}else {
+	} else {
 		R.Debug = true
 	}
 	return R
@@ -83,62 +83,63 @@ func (this *Request)InitDES() error {
 	this.Json = new(Js)
 	Config.SetDefault("DES.DESParam", "params")
 	params = this.PostParam(Config.GetString("DES.DESParam")).GetString()
+
 	//如果是开启了 DES加密 需要验证是否加密,然后需要验证签名,和加密内容
 	if Config.GetBool("system.OpenDES") == true {
 		if params == "" {
-			return errors.New("No " + params)
-		} else {
-			enableSignCheck := Config.GetBool("DES.EnableSignCheck")
-			sign := this.PostParam("sign").GetString()
-			timeStamp := this.PostParam("timeStamp").GetString()
-			randomNum := this.PostParam("randomNum").GetString()
-			isEncrypted := this.PostParam("isEncrypted").GetString()
-			if enableSignCheck {
-				if sign == "" || timeStamp == "" || randomNum == "" {
-					return errors.New("No Md5 Parameter")
-				}
-
-				keymd5 := md5.New()
-				keymd5.Write([]byte(Config.GetString("system.MD5key")))
-				md5key := hex.EncodeToString(keymd5.Sum(nil))
-
-				signmd5 := md5.New()
-				signmd5.Write([]byte(params + isEncrypted + timeStamp + randomNum + md5key))
-				sign2 := hex.EncodeToString(signmd5.Sum(nil))
-
-				if sign != sign2 {
-					return errors.New("No Md5 Failure")
-				}
-			}
-			//如果是加密的params那么进行解密操作
-			if isEncrypted == "1" {
-
-				base64params, err := base64.StdEncoding.DecodeString(params)
-				if err != nil {
-					return err
-				}
-				ecbMode := Config.GetBool("DES.ECBMode")
-				var origData []byte
-				switch ecbMode {
-				case true:
-					origData, err = this.Des.DesDecryptECB(base64params, Config.GetString("system.DESkey"))
-					break
-				case false:
-					origData, err = this.Des.DesDecrypt(base64params, Config.GetString("system.DESkey"), Config.GetString("system.DESiv"))
-					break
-				}
-				if err != nil {
-					return err
-				}
-				params = string(origData)
-			}
-			this.Json = Json(params)
-			this.Encryption = true
+			return errors.New("No params")
 		}
-		return nil;
-	} else {
-		return errors.New("debug");
 	}
+
+	if params != "" {
+		enableSignCheck := Config.GetBool("DES.EnableSignCheck")
+		sign := this.PostParam("sign").GetString()
+		timeStamp := this.PostParam("timeStamp").GetString()
+		randomNum := this.PostParam("randomNum").GetString()
+		isEncrypted := this.PostParam("isEncrypted").GetString()
+		if enableSignCheck {
+			if sign == "" || timeStamp == "" || randomNum == "" {
+				return errors.New("No Md5 Parameter")
+			}
+
+			keymd5 := md5.New()
+			keymd5.Write([]byte(Config.GetString("system.MD5key")))
+			md5key := hex.EncodeToString(keymd5.Sum(nil))
+
+			signmd5 := md5.New()
+			signmd5.Write([]byte(params + isEncrypted + timeStamp + randomNum + md5key))
+			sign2 := hex.EncodeToString(signmd5.Sum(nil))
+
+			if sign != sign2 {
+				return errors.New("No Md5 Failure")
+			}
+		}
+		//如果是加密的params那么进行解密操作
+		if isEncrypted == "1" {
+
+			base64params, err := base64.StdEncoding.DecodeString(params)
+			if err != nil {
+				return err
+			}
+			ecbMode := Config.GetBool("DES.ECBMode")
+			var origData []byte
+			switch ecbMode {
+			case true:
+				origData, err = this.Des.DesDecryptECB(base64params, Config.GetString("system.DESkey"))
+				break
+			case false:
+				origData, err = this.Des.DesDecrypt(base64params, Config.GetString("system.DESkey"), Config.GetString("system.DESiv"))
+				break
+			}
+			if err != nil {
+				return err
+			}
+			params = string(origData)
+		}
+		this.Json = Json(params)
+		this.Encryption = true
+	}
+	return nil;
 }
 
 // 使用Json参数传入Json字符
