@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"github.com/labstack/echo"
 	"github.com/wenzhenxi/phalgo/validation"
-	"errors"
+	"github.com/wenzhenxi/phalgo/errors"
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/base64"
@@ -69,7 +69,8 @@ func (this *Request)GetError() error {
 
 	if this.valid.HasErrors() {
 		for _, v := range this.valid.Errors {
-			return errors.New(v.Message + v.Key)
+
+			return errors.ErrCustom(v.Message + v.Key)
 		}
 	}
 
@@ -87,7 +88,7 @@ func (this *Request)InitDES() error {
 	//如果是开启了 DES加密 需要验证是否加密,然后需要验证签名,和加密内容
 	if Config.GetBool("system.OpenDES") == true {
 		if params == "" {
-			return errors.New("No params")
+			return errors.ErrNoParams
 		}
 	}
 
@@ -99,7 +100,7 @@ func (this *Request)InitDES() error {
 		isEncrypted := this.PostParam("isEncrypted").GetString()
 		if enableSignCheck {
 			if sign == "" || timeStamp == "" || randomNum == "" {
-				return errors.New("No Md5 Parameter")
+				return errors.ErrMD5
 			}
 
 			keymd5 := md5.New()
@@ -111,7 +112,7 @@ func (this *Request)InitDES() error {
 			sign2 := hex.EncodeToString(signmd5.Sum(nil))
 
 			if sign != sign2 {
-				return errors.New("No Md5 Failure")
+				return errors.ErrMD5
 			}
 		}
 		//如果是加密的params那么进行解密操作

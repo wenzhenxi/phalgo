@@ -8,6 +8,7 @@ package phalgo
 
 import (
 	"github.com/spf13/viper"
+	"path"
 	"fmt"
 )
 
@@ -21,14 +22,18 @@ func NewConfig(filePath string, fileName string) {
 	Config.SetConfigName(fileName)
 	//filePath支持相对路径和绝对路径 etc:"/a/b" "b" "./b"
 	if (filePath[:1] != "/"){
-		Config.AddConfigPath(GetPath() + "/" + filePath + "/")
+		Config.AddConfigPath(path.Join(GetPath(),filePath))
 	}else{
-		Config.AddConfigPath(filePath + "/")
+		Config.AddConfigPath(filePath)
 	}
+
 	// 找到并读取配置文件并且 处理错误读取配置文件
 	if err := Config.ReadInConfig(); err != nil {
-		panic(fmt.Errorf("Fatal error config file: %s \n", err).Error())
+		panic(err)
 	}
+
+
+	fmt.Println(Config.Get("onl"))
 }
 
 
