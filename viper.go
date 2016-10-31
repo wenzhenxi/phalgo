@@ -9,7 +9,6 @@ package phalgo
 import (
 	"github.com/spf13/viper"
 	"path"
-	"fmt"
 )
 
 var Config *viper.Viper
@@ -32,8 +31,6 @@ func NewConfig(filePath string, fileName string) {
 		panic(err)
 	}
 
-
-	fmt.Println(Config.Get("onl"))
 }
 
 

@@ -153,6 +153,35 @@ func (this *Request)SetJson(json string) {
 //--------------------------------------------------------获取参数-------------------------------------
 
 // 获取Json参数
+func (this *Request)DESParam(keys ...string) *Request {
+	var key string
+	var str string
+	this.Clean()
+	if (this.Encryption) {
+		json := *this.Json
+		for _, v := range keys {
+			json.Get(v)
+			key = key + v
+		}
+
+		this.Jsonparam.val = json
+		this.Jsonparam.key = key
+		this.jsonTag = true
+	} else {
+		str = this.Context.QueryParam(keys[0])
+
+		if str == "" {
+			str = this.Context.FormValue(keys[0])
+		}
+		this.params.val = str
+		this.params.key = keys[0]
+		this.jsonTag = false
+	}
+
+	return this
+}
+
+// 获取Json参数
 func (this *Request)JsonParam(keys ...string) *Request {
 
 	var key string
