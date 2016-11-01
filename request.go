@@ -122,16 +122,9 @@ func (this *Request)InitDES() error {
 			if err != nil {
 				return err
 			}
-			ecbMode := Config.GetBool("DES.ECBMode")
-			var origData []byte
-			switch ecbMode {
-			case true:
-				origData, err = this.Des.DesDecryptECB(base64params, Config.GetString("system.DESkey"))
-				break
-			case false:
-				origData, err = this.Des.DesDecrypt(base64params, Config.GetString("system.DESkey"), Config.GetString("system.DESiv"))
-				break
-			}
+
+			origData, err := this.Des.DesDecrypt(base64params, Config.GetString("system.DESkey"), Config.GetString("system.DESiv"))
+
 			if err != nil {
 				return err
 			}
