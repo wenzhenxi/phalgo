@@ -234,13 +234,18 @@ func (j *Js) ToArray() (k, d []string) {
 //获取[]string类型,整数和浮点类型会被转换成string
 func (j *Js) StringtoArray() []string {
 	var data []string
-	for _, v := range j.Data.([]interface{}) {
-		switch vv := v.(type) {
-		case string:
-			data = append(data, vv)
-		case float64:
-			data = append(data, strconv.FormatFloat(vv, 'f', -1, 64))
+
+	switch j.Data.(type) {
+	case []interface{}:
+		for _, v := range j.Data.([]interface{}) {
+			switch vv := v.(type) {
+			case string:
+				data = append(data, vv)
+			case float64:
+				data = append(data, strconv.FormatFloat(vv, 'f', -1, 64))
+			}
 		}
 	}
+
 	return data
 }

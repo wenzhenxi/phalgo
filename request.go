@@ -82,8 +82,7 @@ func (this *Request)InitDES() error {
 
 	params := ""
 	this.Json = new(Js)
-	Config.SetDefault("DES.DESParam", "params")
-	params = this.PostParam(Config.GetString("DES.DESParam")).GetString()
+	params = this.PostParam(Config.GetString("system.DESParam")).GetString()
 
 	//如果是开启了 DES加密 需要验证是否加密,然后需要验证签名,和加密内容
 	if Config.GetBool("system.OpenDES") == true {
