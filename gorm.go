@@ -7,15 +7,15 @@
 package phalgo
 
 import (
+	"fmt"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mssql"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	_ "github.com/jinzhu/gorm/dialects/mssql"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"fmt"
 )
 
-var Gorm  map[string]*gorm.DB
+var Gorm map[string]*gorm.DB
 
 func init() {
 	Gorm = make(map[string]*gorm.DB)
@@ -29,14 +29,14 @@ func NewDB(dbname string) {
 
 	//默认配置
 	Config.SetDefault(dbname, map[string]interface{}{
-		"dbHost"          : "127.0.0.1",
-		"dbName"          : "phalgo",
-		"dbUser"          : "root",
-		"dbPasswd"        : "",
-		"dbPort"          : 3306,
-		"dbIdleconns_max" : 0,
-		"dbOpenconns_max" : 20,
-		"dbType"          : "mysql",
+		"dbHost":          "127.0.0.1",
+		"dbName":          "phalgo",
+		"dbUser":          "root",
+		"dbPasswd":        "",
+		"dbPort":          3306,
+		"dbIdleconns_max": 0,
+		"dbOpenconns_max": 20,
+		"dbType":          "mysql",
 	})
 	dbHost := Config.GetString(dbname + ".dbHost")
 	dbName := Config.GetString(dbname + ".dbName")
@@ -45,11 +45,14 @@ func NewDB(dbname string) {
 	dbPort := Config.GetString(dbname + ".dbPort")
 	dbType := Config.GetString(dbname + ".dbType")
 
-	orm, err = gorm.Open(dbType, dbUser + ":" + dbPasswd + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8")
+	connectString := dbUser + ":" + dbPasswd + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8"
 	//开启sql调试模式
 	//GDB.LogMode(true)
-	if err != nil {
-		fmt.Println("数据库连接异常!")
+
+	for orm, err = gorm.Open(dbType, connectString); err != nil; {
+		fmt.Println("数据库连接异常! 5秒重试")
+		time.Sleep(5 * time.Second)
+		orm, err = gorm.Open(dbType, connectString)
 	}
 	//连接池的空闲数大小
 	orm.DB().SetMaxIdleConns(Config.GetInt(dbname + ".idleconns_max"))
