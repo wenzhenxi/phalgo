@@ -54,7 +54,7 @@ PhalGo的升级也很简单,只需要在项目目录执行:
         //初始化ECHO路由
         phalgo.NewEcho()
         // Routes路由
-        phalgo.Echo.Get("/", func(c echo.Context) error {
+        phalgo.Echo.GET("/", func(c echo.Context) error {
             Response := phalgo.NewResponse(c)
             return Response.RetSuccess("hello,world!")
         })

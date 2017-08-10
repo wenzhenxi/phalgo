@@ -8,6 +8,7 @@ package phalgo
 
 import (
 	"fmt"
+	"time"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mssql"
 	_ "github.com/jinzhu/gorm/dialects/mysql"

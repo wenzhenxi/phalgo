@@ -468,7 +468,7 @@ func (this *Request)ErrorLogRecover() {
 	if err := recover(); err != nil {
 		this.Context.Response().Write([]byte("系统错误!具体原因:" + TurnString(err)))
 		LogError(err, map[string]interface{}{
-			"URL.Path":this.Context.Request().URL().Path(),
+			"URL.Path":this.Context.Request().URL.Path,
 			"QueryParams":this.Context.QueryParams(),
 		})
 	}

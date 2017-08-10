@@ -9,8 +9,6 @@ package phalgo
 import (
 	"github.com/labstack/echo/middleware"
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/engine/fasthttp"
-	"github.com/labstack/echo/engine/standard"
 	"net/http"
 )
 
@@ -37,16 +35,10 @@ func SetRetType(i int) {
 	RetType = i
 }
 
-// 使用Fasthttp方式开启服务
-func RunFasthttp(prot string) {
 
-	Echo.Run(fasthttp.New(prot))
-}
-
-// 使用Standard的方式开启服务
-func RunStandard(prot string) {
-
-	Echo.Run(standard.New(prot))
+// 开启服务
+func Start(prot string) {
+	Echo.Logger.Fatal(Echo.Start(":1323"))
 }
 
 // 打印请求异常信息
@@ -57,12 +49,12 @@ func Recover() {
 
 // 是否开启debug
 func SetDebug(on bool) {
-	Echo.SetDebug(on)
+	Echo.Debug = on
 }
 
 // 获取debug状态
 func Debug() bool {
-	return Echo.Debug()
+	return Echo.Debug
 }
 
 // 打印请求信息
