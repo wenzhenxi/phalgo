@@ -1,4 +1,4 @@
-# PhalGo V 0.0.3
+# PhalGo V 0.0.4
 
 ##前言
 
@@ -58,8 +58,8 @@ PhalGo的升级也很简单,只需要在项目目录执行:
             Response := phalgo.NewResponse(c)
             return Response.RetSuccess("hello,world!")
         })
-        //开启服务
-        phalgo.RunFasthttp(":1333")
+    	//开启服务
+    	phalgo.Start(":1333")
     }
 
 运行:
