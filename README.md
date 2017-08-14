@@ -98,7 +98,7 @@ PhalGo的升级也很简单,只需要在项目目录执行:
     golang.org/x/sys/unix
     golang.org/x/crypto/md4
     
-##PhalGo-DOC
+## PhalGo-DOC
 
 **文档正在完善中,多谢大家的支持!**
 
@@ -139,7 +139,7 @@ PhalGo的升级也很简单,只需要在项目目录执行:
 [[4.8]PhalGo-签名和加密.md](http://git.oschina.net/wenzhenxi/phalgo/blob/master/docs/manual-zh-CN/%5B4.7%5DPhalGo-%E7%AD%BE%E5%90%8D%E5%92%8C%E5%8A%A0%E5%AF%86.md)
 
     
-##联系方式
+## 联系方式
 
 个人主页:w-blog.cn
 
