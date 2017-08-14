@@ -1,13 +1,13 @@
 # PhalGo V 0.0.4
 
-##前言
+## 前言
 
 PhalGo是一个Go语言开发的一体化开发框架,主要用于API开发,因为使用ECHO框架作为http服务,MVC模式一样可以使用,牛顿曾经说过"如果我比别人看得远,那是因为我站在巨人的肩膀上",既然Golang有那么多优秀的组件为什么还要重复造轮子呢?所以就有了一个把一些优秀组件整合起来降低开发成本的想法,整合了比较好的组件比如echo,gorm,viper等等,开源出来希望可以帮助到大家,也希望和大家一起交流!
 
 **注意:框架前期还不是很完善,请不要直接使用到生产环境!**
 
 
-##PhalGo的目的
+## PhalGo的目的
 
 PhalGo不是新技术,也不是新的模式,而是继续将前人,大神和顶级大师写的非常优秀的组件进行整合进行分享,并且进行封装来更易于开发人员来进行使用,最终达到建立规范降低开发成本的目的,这是PhalGo被创造出来核心的目的。
 
@@ -16,7 +16,7 @@ PhalGo不是新技术,也不是新的模式,而是继续将前人,大神和顶�
 PhalGo是对PhalApi和PhalCon的致敬,吸取了一些好的思想,应为是使用golnag编写所以命名为PhalGo
 
 
-##安装
+## 安装
 
 多谢各位同学的反馈PhalGo安装已经推荐使用**glide**进行安装
 
@@ -38,7 +38,7 @@ PhalGo的升级也很简单,只需要在项目目录执行:
 
 **phalgo-sample:**[https://github.com/wenzhenxi/phalgo-sample](https://github.com/wenzhenxi/phalgo-sample "https://github.com/wenzhenxi/phalgo-sample")
 
-##Holle,world!
+## Holle,world!
 
 创建文件 server.go
 
@@ -70,31 +70,28 @@ PhalGo的升级也很简单,只需要在项目目录执行:
 
 ![](http://i.imgur.com/tHi9dT2.png)
     
-##依赖
+## 依赖
 
     //配置文件读取
-    go get github.com/spf13/viper
+    github.com/spf13/viper
     
     //辅助使用,参数过滤,curl等(已经集成到框架)
     github.com/astaxie/beego
     
     //主要路由
-    go get github.com/labstack/echo
+    github.com/labstack/echo
     
     //主要数据操作
-    go get github.com/jinzhu/gorm
+    github.com/jinzhu/gorm
     
     //log记录
-    go get github.com/Sirupsen/logrus
+    github.com/Sirupsen/logrus
     
     //进程级别缓存
-    go get github.com/coocood/freecache
-    
-    //高速http
-    go get github.com/valyala/fasthttp
+    github.com/coocood/freecache
     
     //redis依赖
-    go get github.com/garyburd/redigo
+    github.com/garyburd/redigo
     
     //注意会使用到如下依赖(国内可能需要翻墙)
     golang.org/x/net/context
