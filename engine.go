@@ -38,7 +38,7 @@ func SetRetType(i int) {
 
 // 开启服务
 func Start(prot string) {
-	Echo.Logger.Fatal(Echo.Start(":1323"))
+	Echo.Logger.Fatal(Echo.Start(prot))
 }
 
 // 打印请求异常信息
